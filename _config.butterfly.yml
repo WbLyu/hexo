@@ -11,7 +11,7 @@
 
 nav:
   # Navigation bar logo image
-  logo: https://minio.wblv66.top/hexo/favicon.png
+  logo: https://img.wblv66.top/hexo/favicon.png
   display_title: true
   # Whether to fix navigation bar
   fixed: true
@@ -75,10 +75,10 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: https://minio.wblv66.top/hexo/favicon.png
+favicon: https://img.wblv66.top/hexo/favicon.png
 
 avatar:
-  img: https://minio.wblv66.top/hexo/avatar.jpg
+  img: https://img.wblv66.top/hexo/avatar.jpg
   effect: false
 
 # Disable all banner images
@@ -289,7 +289,7 @@ footer:
     version: true
   custom_text:
     <a href="https://beian.miit.gov.cn/" target="_blank"><span>冀ICP备2025114707号-1</span></a>
-    <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010802045820" rel="noreferrer" target="_blank"><img class="icp-icon" src="https://minio.wblv66.top/hexo/beian.png"><span>京公网安备11010802045820号</span></a>
+    <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010802045820" rel="noreferrer" target="_blank"><img class="icp-icon" src="https://img.wblv66.top/hexo/beian.png"><span>京公网安备11010802045820号</span></a>
     
 
 

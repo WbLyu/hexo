@@ -43,7 +43,7 @@ top_img: transparent
 2. 稀疏表达，摆脱了BEV特征网格，query直接与原始传感器特征交互，提高效率
 3. 流式处理，维护一个先进先出的队列用以存储历史任务query，通过队列可以实现时间融合
 
-![drivetransformer-1.png](https://minio.wblv66.top/end-to-end/drivetransformer-1.png)
+![drivetransformer-1.png](https://img.wblv66.top/end-to-end/drivetransformer-1.png)
 
 现有的端到端自动驾驶多是采用**感知-预测-规划**这种序列化结构，这种结构有两个问题：1.可能导致累积误差，进而导致训练不稳定。如`UniAD`方法必须采用多阶段训练策略，这是因为在训练早期存在不一致性，上游模块的不准确会影响下游模块，最终导致整个训练崩溃。2.人工设置的任务排序可能会限制系统利用协同效应的能力，例如规划感知和博弈论交互式预测与规划（几个任务间可能是彼此耦合的）
 
@@ -53,7 +53,7 @@ top_img: transparent
 
 ## 3. 方法
 
-![drivetransformer-2.png](https://minio.wblv66.top/end-to-end/drivetransformer-2.png)
+![drivetransformer-2.png](https://img.wblv66.top/end-to-end/drivetransformer-2.png)
 
 1. 初始化Agent、Map、Ego三类稀疏Task Token
 2. 多视角相机图像经过Backbone变为图像特征，结合3D位置编码构成Sensor Token
@@ -66,7 +66,7 @@ top_img: transparent
 
 受`DAB-DETR`的启发，所有Token由`语义嵌入`（semantic embedding）和`位置编码`（position encodings）两个部分组成
 
-![drivetransformer-3.png](https://minio.wblv66.top/end-to-end/drivetransformer-3.png)
+![drivetransformer-3.png](https://img.wblv66.top/end-to-end/drivetransformer-3.png)
 
 图中将语义嵌入简称为了Tokens
 
@@ -84,7 +84,7 @@ top_img: transparent
 
 三种注意力仅更新得到语义嵌入，位置编码的更新是根据task head 的结果更新的
 
-![drivetransformer-4.png](https://minio.wblv66.top/end-to-end/drivetransformer-4.png)
+![drivetransformer-4.png](https://img.wblv66.top/end-to-end/drivetransformer-4.png)
 
 **传感器交叉注意力（Sensor Cross Attention，SCA）**，令任务和原始传感器信息间能直接交互
 
@@ -139,13 +139,13 @@ $$
 
 每一个注意力模块是由TSA、TCA、SCA三个部分组成的，通过堆叠多层注意力模块便实现了`DriveTransformer`。多层模块中共用相同的传感器token和历史信息队列
 
-![drivetransformer-5.png](https://minio.wblv66.top/end-to-end/drivetransformer-5.png)
+![drivetransformer-5.png](https://img.wblv66.top/end-to-end/drivetransformer-5.png)
 
 ### 3.3 DETR风格任务头
 
 受`DETR`启发，在每层模块之后设置任务头以逐步细化预测，并相应地更新位置编码
 
-![drivetransformer-6.png](https://minio.wblv66.top/end-to-end/drivetransformer-6.png)
+![drivetransformer-6.png](https://img.wblv66.top/end-to-end/drivetransformer-6.png)
 
 **目标检测与运动预测**，现有的端到端方法仍然采用经典的检测-关联-预测流程，由于关联本身固有的难度，这给训练带来了不稳定性。为了解决这个问题，将相同的Agent Query送到不同的任务头进行检测和预测，并且预测的标签被转换到agent的局部坐标系下，于是检测和预测彼此独立，二者的结果不会互相影响。当推理时，预测结果需要与检测结果结合，得到全局坐标系下的结果
 

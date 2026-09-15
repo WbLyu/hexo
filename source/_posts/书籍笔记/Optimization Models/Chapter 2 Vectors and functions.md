@@ -143,7 +143,7 @@ $$
 $$
 \mathcal{B}_p = \{ \mathbf{x} \mid  \lVert \mathbf{x} \rVert _p \le 1 \}
 $$
-![2.11](https://minio.wblv66.top/optimization-models/2.11.png "2.11")
+![2.11](https://img.wblv66.top/optimization-models/2.11.png "2.11")
 
 $L_2$范数类似由于一个球，因此它是旋转不变的，这意味着一个固定长度的向量如果任意旋转，将保持相同的$L_2$范数
 

@@ -89,7 +89,7 @@ $$
 
 以上推理提出了以下迭代算法
 
-![algorithm1.png](https://minio.wblv66.top/optimization-models/algorithm1.png)
+![algorithm1.png](https://img.wblv66.top/optimization-models/algorithm1.png)
 
 算法总结：
 
@@ -111,7 +111,7 @@ $$
 $$
 根据谱映射定理，见Section 3.7.2 ，$\bm{B}_{\sigma }$与$\bm{A}$有相同的特征向量，且$\bm{B}_{\sigma }$的特征值为$\mu _i = (\lambda _i - \sigma )^{-1}$，其中$\lambda _i,i=1,\cdots ,n$是$\bm{A}$的特征值。$\bm{B}_{\sigma }$的最大模特征值 $\mu _{\max}$现在对应于在复平面上最接近$\sigma$的$\lambda _i$。将幂法应用于$\bm{B}_{\sigma }$，我们因此可以得到最接近所选$\sigma$的特征值$\lambda _i$以及相应的特征向量。移位-逆幂法如下所示
 
-![algorithm2.png](https://minio.wblv66.top/optimization-models/algorithm2.png)
+![algorithm2.png](https://img.wblv66.top/optimization-models/algorithm2.png)
 
 算法总结：
 
@@ -137,7 +137,7 @@ $$
 $$
 这被称为瑞利商(Rayleigh quotient)，参见Section第4.3.1节。如果我们按照在移位-逆幂算法中自适应地选择移位，就得到了所谓的瑞利商迭代法，如下所示。与幂迭代方法不同，瑞利商迭代法可以被证明**具有局部二次收敛性**，也就是说，在经过一定次数迭代后，第$k+1$次迭代中解的收敛差距与第$k$次迭代中解的差距的平方成正比
 
-![algorithm3.png](https://minio.wblv66.top/optimization-models/algorithm3.png)
+![algorithm3.png](https://img.wblv66.top/optimization-models/algorithm3.png)
 
 算法总结：
 
@@ -175,7 +175,7 @@ $$
 $$
 其中$\bm{r} = \operatorname{rank}(\bm{A})$，并对$\bm{A}_i$应用以下算法，以获得$\bm{A}$的紧凑奇异值分解的所有项（假设奇异值彼此相差较大）
 
-![algorithm4.png](https://minio.wblv66.top/optimization-models/algorithm4.png)
+![algorithm4.png](https://img.wblv66.top/optimization-models/algorithm4.png)
 
 算法总结：
 
@@ -260,7 +260,7 @@ a_{21}x_1 + a_{22}x_2 = a_{21} y_1 / a_{11} + a_{22}x_2 = y_2
 $$
 因此，我们得到$x_2 = \frac{y_2- a_{21} y_1 / a_{11}}{a_{22}}$。接下来，我们将$x_1,x_2$代入第三个方程以求得 $x_3$，然后以同样的方式继续，最终得到$x_n$。如下所示
 
-![algorithm5.png](https://minio.wblv66.top/optimization-models/algorithm5.png)
+![algorithm5.png](https://img.wblv66.top/optimization-models/algorithm5.png)
 
 算法总结：
 
@@ -340,7 +340,7 @@ $$
 
 下面的算法描述了带部分主元的高斯消元法
 
-![algorithm7.png](https://minio.wblv66.top/optimization-models/algorithm7.png)
+![algorithm7.png](https://img.wblv66.top/optimization-models/algorithm7.png)
 
 接下来我们计算通过高斯消元法解方阵系统所需的基本操作次数。首先考虑高斯消元过程，我们看到在该过程的第一次迭代中，需要$2n+1$次操作来更新矩阵的第二行（$1$次除法和$n$次乘法和减法运算以求出行的新的元素）。因此，为了将第一列中第一个元素以下的所有元素置零，并更新从第二行开始的所有行，需要$(n-1)(2n+1)$次操作。接下来，我们需要$(n-2)(2n-1)$次操作以将第二列置零并更新矩阵；对于第三列，我们需要$(n-3)(2n-3)$次操作，依此类推。这些操作的总和为
 $$
@@ -412,7 +412,7 @@ $$
 $$
 虽然两种公式（ GS 和 MGS ）在数学上是等价的，但后者在数值上被证明更稳定。接下来将 MGS 过程形式化为一个算法
 
-![algorithm8.png](https://minio.wblv66.top/optimization-models/algorithm8.png)
+![algorithm8.png](https://img.wblv66.top/optimization-models/algorithm8.png)
 
 对于较大的$m,n$，计算工作主要由算法的最内层循环支配：计算$r_{ij} = \bm{q}^{(i)\top} \bm{\zeta}^{(j)}$需要$m$次乘加运算（实际是$m$次乘法和$m-1$次加法），而计算$\bm{\zeta}^{(j)} = \bm{\zeta}^{(j)} - r_{ij}\bm{q}^{(i)}$需要$m$次乘减运算，因此每个内层循环总计$4m$次操作。因此，算法的总体操作计数大约为
 $$

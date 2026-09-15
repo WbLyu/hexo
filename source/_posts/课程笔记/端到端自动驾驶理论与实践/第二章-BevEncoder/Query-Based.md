@@ -45,7 +45,7 @@ Query的核心是隐式查询，它先有一个关于BEV空间的先验（BEV qu
 
 创新点：将`Transformer`原本的“全局注意力”变成了“稀疏的局部注意力”
 
-![deformabledetr-1.png](https://minio.wblv66.top/end-to-end/deformabledetr-1.png)
+![deformabledetr-1.png](https://img.wblv66.top/end-to-end/deformabledetr-1.png)
 
 ### 2.1 传统多头注意力机制
 
@@ -86,7 +86,7 @@ $p_q+\Delta p_{mqk}$是为了得到最终的采样位置，与特征图$x$相乘
 {% btn 'https://ieeexplore.ieee.org/abstract/document/10791908/', TPAMI %}
 <!-- markdownlint-enable MD034 -->
 
-![bevformer-1.png](https://minio.wblv66.top/end-to-end/bevformer-1.png)
+![bevformer-1.png](https://img.wblv66.top/end-to-end/bevformer-1.png)
 
 ### 3.1 相关概念
 

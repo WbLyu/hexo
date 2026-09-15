@@ -207,7 +207,7 @@ $$
 
 我们可以将矩阵解释为从输入空间到输出空间的作用的线性映射（向量值函数，即输出为向量）或者操作。我们回顾一下线性映射：当任意点$\bm{x},\bm{z} \in \mathcal{X}$和任意标量$\lambda,\mu \in \mathcal{Y}$满足$f( \lambda \bm{x} + \mu \bm{z} ) = \lambda f(\bm{x}) + \mu f(\bm{z})$那么映射$f:\mathcal{X}\rightarrow \mathcal{Y}$为线性。任意线性映射$f:\mathbb{R}^n\rightarrow \mathbb{R}^m$都可以用一个矩阵$\bm{A}\in\mathbb{R}^{m,n}$表示
 
-![3.3](https://minio.wblv66.top/optimization-models/3.3.png "3.3")
+![3.3](https://img.wblv66.top/optimization-models/3.3.png "3.3")
 
 放射映射就是简单地在线性方程上加一个常数项，因此任意放射映射$f:\mathbb{R}^n\rightarrow \mathbb{R}^m$都可以表示为
 
@@ -327,7 +327,7 @@ $$
 $$
  \bm{x}  = \bm{A}\bm{\phi } + \bm{\zeta},\bm{\zeta} \in \mathcal{N}(\bm{A}^\top)
 $$
-![3.4](https://minio.wblv66.top/optimization-models/3.4.png "3.4")
+![3.4](https://img.wblv66.top/optimization-models/3.4.png "3.4")
 
 ## 3. 行列式、特征值和特征向量
 
@@ -347,11 +347,11 @@ $$
 
 当$\lVert \bm{x} \rVert_2$保持不变且方向$\bm{u}$扫描所有可能的方向时，$\bm{x}$会沿圆周移动，而图中显示了相应的$\bm{y}$的轨迹
 
-![3.5](https://minio.wblv66.top/optimization-models/3.5.png "3.5")
+![3.5](https://img.wblv66.top/optimization-models/3.5.png "3.5")
 
 通过数值实验可以发现，在这个例子中存在两个输入方向$\bm{u}(1)$、$\bm{u}(2)$，它们在由$\bm{A}$定义的映射下是角度不变的即角度$\theta_u$为零（或 $\pm 180^\circ$），此时$\bm{A}$在这些直线上表现为标量乘法
 
-![3.6](https://minio.wblv66.top/optimization-models/3.6.png "3.6")
+![3.6](https://img.wblv66.top/optimization-models/3.6.png "3.6")
 
 ### 3.2 行列式和单位立方体的变化
 
@@ -378,7 +378,7 @@ $$
 
 假设我们将线性映射$\bm{y} = \bm{Ax}$应用于$\mathbb{R}^2$中单位正方形顶点的四个向量，变换后的点构成一个平行四边形的顶点
 
-![3.6](https://minio.wblv66.top/optimization-models/3.6 "3.6")
+![3.6](https://img.wblv66.top/optimization-models/3.6 "3.6")
 
 单位正方形的面积为一。通过验证可以知道变换后的四边形（即平行四边形）的面积等于矩阵行列式的绝对值。可以证明，在一般维数$n$中，**矩阵$\bm{A}$的行列式的绝对值仍然描述了单位超立方体通过$\bm{A}$变换得到的平行多面体的体积**
 

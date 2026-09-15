@@ -77,7 +77,7 @@ export Ali_Secret="TJHStNFrxxxxxxxxxxxxxxxxxxx"
 
 /root/.acme.sh/acme.sh --issue --dns dns_ali -d www.wblv66.top -d wblv66.top
 
-/root/.acme.sh/acme.sh --issue --dns dns_ali -d www.minio.wblv66.top -d minio.wblv66.top
+/root/.acme.sh/acme.sh --issue --dns dns_ali -d www.img.wblv66.top -d img.wblv66.top
 ```
 
 其中`--dns dns_ali`为指定使用阿里云的`DNS API`来验证域名所有权。`dns_ali`是 `acme.sh` 内置的阿里云DNS插件
@@ -93,7 +93,7 @@ export Ali_Secret="TJHStNFrxxxxxxxxxxxxxxxxxxx"
 
 /root/.acme.sh/acme.sh --install-cert -d www.wblv66.top --key-file "/www/server/panel/vhost/cert/wblv66.top/privkey.pem"  --fullchain-file "/www/server/panel/vhost/cert/wblv66.top/fullchain.pem" --reloadcmd "service nginx force-reload"
 
-/root/.acme.sh/acme.sh --install-cert -d www.minio.wblv66.top --key-file "/www/server/panel/vhost/cert/minio.wblv66.top/privkey.pem"  --fullchain-file "/www/server/panel/vhost/cert/minio.wblv66.top/fullchain.pem" --reloadcmd "service nginx force-reload"
+/root/.acme.sh/acme.sh --install-cert -d www.img.wblv66.top --key-file "/www/server/panel/vhost/cert/img.wblv66.top/privkey.pem"  --fullchain-file "/www/server/panel/vhost/cert/img.wblv66.top/fullchain.pem" --reloadcmd "service nginx force-reload"
 
 ```
 
@@ -162,7 +162,7 @@ install_cert() {
 declare -a DOMAINS=(
   "www.random.wblv66.top random.wblv66.top"
   "www.wblv66.top wblv66.top"
-  "www.minio.wblv66.top minio.wblv66.top"
+  "www.img.wblv66.top img.wblv66.top"
 )
 
 # 主程序
