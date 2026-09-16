@@ -68,53 +68,73 @@ ip route get 239.255.0.1
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+
   <!--
     DCL-SLAM 实车 DDS 传输配置，两辆车共用。
-    白名单与本机实际接口匹配：a 车使用 192.168.31.11，b 车使用 192.168.31.12。
-    保留回环接口供本机通信使用；无线地址变化时同步修改白名单和初始节点。
+
+    白名单与本机实际接口匹配：a 车使用 192.168.31.11，
+    b 车使用 192.168.31.12。
+
+    保留回环接口供本机通信使用；
+    无线地址变化时同步修改白名单和初始节点。
   -->
+
   <transport_descriptors>
     <transport_descriptor>
+
       <transport_id>dcl_wifi_udp</transport_id>
       <type>UDPv4</type>
+
       <!-- 扩大初始发现的 participant ID 探测范围，兼顾 bridge 与 ROS 2 CLI。 -->
       <maxInitialPeersRange>32</maxInitialPeersRange>
+
       <interfaceWhiteList>
         <address>127.0.0.1</address>
         <address>192.168.31.11</address>
         <address>192.168.31.12</address>
       </interfaceWhiteList>
+
     </transport_descriptor>
   </transport_descriptors>
 
-  <participant profile_name="dcl_wifi_participant" is_default_profile="true">
+  <participant
+    profile_name="dcl_wifi_participant"
+    is_default_profile="true">
+
     <rtps>
+
       <useBuiltinTransports>false</useBuiltinTransports>
+
       <userTransports>
         <transport_id>dcl_wifi_udp</transport_id>
       </userTransports>
+
       <!-- 通过明确的单播目标发起发现，减少对 Wi-Fi 组播转发的依赖。 -->
       <builtin>
         <initialPeersList>
+
           <locator>
             <udpv4>
               <address>192.168.31.11</address>
             </udpv4>
           </locator>
+
           <locator>
             <udpv4>
               <address>192.168.31.12</address>
             </udpv4>
           </locator>
+
         </initialPeersList>
       </builtin>
+
     </rtps>
   </participant>
+
 </profiles>
 ```
-
-
 
 | 字段 | 作用 |
 | --- | --- |

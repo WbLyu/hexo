@@ -43,7 +43,7 @@ top_img: transparent
 {% btn 'https://arxiv.org/abs/2110.06922', CORL 2021 %}
 <!-- markdownlint-enable MD034 -->
 
-![detr3d-1.png](https://img.wblv66.top/end-to-end/detr3d-1.png)
+![detr3d-1.png](https://img.wblyu.top/end-to-end/detr3d-1.png)
 
 ### 2.1 图像特征提取
 
@@ -72,7 +72,7 @@ top_img: transparent
 
 创新点：解决了DETR3D中将参考点投影回2D的缺点，此论文给特征点增加了3D坐标属性
 
-![petr-1.png](https://img.wblv66.top/end-to-end/petr-1.png)
+![petr-1.png](https://img.wblyu.top/end-to-end/petr-1.png)
 
 ### 3.1 2D图像特征提取
 
@@ -97,7 +97,7 @@ top_img: transparent
 {% btn 'https://arxiv.org/abs/2206.01256', ICCV 2023 %}
 <!-- markdownlint-enable MD034 -->
 
-![petr-2.png](https://img.wblv66.top/end-to-end/petr-2.png)
+![petr-2.png](https://img.wblyu.top/end-to-end/petr-2.png)
 
 ### 4.1 引入了历史帧
 
@@ -105,7 +105,7 @@ top_img: transparent
 
 ### 4.2 特征引导位置编码
 
-![petr-3.png](https://img.wblv66.top/end-to-end/petr-3.png)
+![petr-3.png](https://img.wblyu.top/end-to-end/petr-3.png)
 
 v2中将value和key分开输出，从2D特征得到value。将2D图像特征与3D位置编码进行加权，从而产生与图像内容绑定的3D位置感知特征，作为key
 

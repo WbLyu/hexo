@@ -59,11 +59,11 @@ BEV方法的核心目标是：为BEV网格中每个格子组织并填充合适�
 
 `Lift`时对每个$C$维的特征点$c$和$D$维的深度分布概率$\alpha$做外积操作。这被称为软性分配（Soft Association）。即对每个深度都分配特征向量，并根据分布概率对特征值进行缩放，以此保留了不确定性
 
-![lss-1.png](https://img.wblv66.top/end-to-end/lss-1.png)
+![lss-1.png](https://img.wblyu.top/end-to-end/lss-1.png)
 
 最终得到了$[B, N, D, H, W, C]$的**特征张量**，其中$D$是深度切片数。每个$[D, H, W, C]$都是一个视锥点云
 
-![lss-2.png](https://img.wblv66.top/end-to-end/lss-2.png)
+![lss-2.png](https://img.wblyu.top/end-to-end/lss-2.png)
 
 ### 2.3 坐标变换
 
@@ -95,7 +95,7 @@ BEV方法的核心目标是：为BEV网格中每个格子组织并填充合适�
 
 创新点：引入了显式深度监督学习；提出线性增加的离散化（linearly increasing bin sizes，LID）方法
 
-![caddn-1.png](https://img.wblv66.top/end-to-end/caddn-1.png)
+![caddn-1.png](https://img.wblyu.top/end-to-end/caddn-1.png)
 
 ### 3.1 Lift
 
@@ -115,7 +115,7 @@ BEV方法的核心目标是：为BEV网格中每个格子组织并填充合适�
 
 这里为了保证深度分布符合近密远疏的特点，采用LID。即近处划分的稠密些，远处稀疏些
 
-![caddn-2.png](https://img.wblv66.top/end-to-end/caddn-2.png)
+![caddn-2.png](https://img.wblyu.top/end-to-end/caddn-2.png)
 
 ### 3.2 Splat
 
@@ -140,7 +140,7 @@ BEV方法的核心目标是：为BEV网格中每个格子组织并填充合适�
 
 创新点：在BEV空间中进行数据增强；改进NMS(非极大值抑制)，用于目标检测中，目的是消除冗余的检测框
 
-![bevdet-1.png](https://img.wblv66.top/end-to-end/bevdet-1.png)
+![bevdet-1.png](https://img.wblyu.top/end-to-end/bevdet-1.png)
 
 ### 4.1 图像编码器（Image-view Encoder）
 
@@ -171,7 +171,7 @@ BEV方法的核心目标是：为BEV网格中每个格子组织并填充合适�
 
 创新点：提出了多模态输入（相机+雷达）和多任务输出（检测+分割）；设计了高效的相机到BEV变换；将BEV作为多模态融合的统一空间
 
-![bevfusion-1.png](https://img.wblv66.top/end-to-end/bevfusion-1.png)
+![bevfusion-1.png](https://img.wblyu.top/end-to-end/bevfusion-1.png)
 
 ### 5.1 相机到BEV
 

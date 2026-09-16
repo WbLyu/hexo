@@ -42,9 +42,9 @@ top_img: transparent
 1. 提出概率规划以应对规划中的不确定性（Uncertainty，指信息不完整）和非确定性（Non-deterministic，指未来的随机性）特征，并能对非凸可行解空间（存在多条最优轨迹）进行建模，从而实现更准确、更安全的规划
 2. V1使用Query，是因为它把规划当成一个类似于目标检测的特征提取与坐标回归任务；V2使用Token，是因为它借助了LLM的思想，把自动驾驶当成了一个语言翻译的任务（根据上下文对候选词进行概率预测）
 
-![vadv2-1.png](https://img.wblv66.top/end-to-end/vadv2-1.png)
+![vadv2-1.png](https://img.wblyu.top/end-to-end/vadv2-1.png)
 
-![vadv2-2.png](https://img.wblv66.top/end-to-end/vadv2-2.png)
+![vadv2-2.png](https://img.wblyu.top/end-to-end/vadv2-2.png)
 
 ## 2. 相关工作
 

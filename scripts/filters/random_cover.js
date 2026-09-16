@@ -1,50 +1,26 @@
-/**
- * Butterfly
- * ramdom cover
- */
+'use strict';
 
-'use strict'
+// Apply after theme rendering so cached posts and Butterfly's own cover
+// generator cannot bypass the distinct URLs required by random-image APIs.
+hexo.extend.filter.register('after_render:html', function (html) {
+  const settings = hexo.theme.config.cover || {};
+  if (![1, 2].includes(Number(settings.suffix))) return html;
 
-hexo.extend.filter.register('before_post_render', function (data) {
-  const { config } = this
-  if (config.post_asset_folder) {
-    const imgTestReg = /\.(png|jpe?g|gif|svg|webp)(\?.*)?$/
-    const topImg = data.top_img
-    const cover = data.cover
-    if (topImg && topImg.indexOf('/') === -1 && imgTestReg.test(topImg)) data.top_img = data.path + topImg
-    if (cover && cover.indexOf('/') === -1) data.cover = data.path + cover
-  }
+  const defaults = (Array.isArray(settings.default_cover)
+    ? settings.default_cover
+    : [settings.default_cover]).filter(value => typeof value === 'string');
+  let index = 0;
 
-  if (data.cover === false) {
-    data.randomcover = randomCover()
-    return data
-  }
-
-  data.cover = data.cover || randomCover()
-  return data
-},999)// 改成最高优先级，最后执行
-
-function randomCover () {
-  const theme = hexo.theme.config
-  let cover
-  let num
-
-  if (theme.cover && theme.cover.default_cover) {
-    if (!Array.isArray(theme.cover.default_cover)) {
-      cover = theme.cover.default_cover
-    } else {
-      num = Math.floor(Math.random() * theme.cover.default_cover.length)
-      cover = theme.cover.default_cover[num]
-    }
-  } else {
-    cover = theme.default_top_img || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
-  }
-  if(theme.cover.suffix){
-    const randomNum = Date.now().toString(36) + Math.random().toString(36).slice(2)
-    if(theme.cover.suffix == 1)
-      cover = cover + '?' + randomNum
-    else if(theme.cover.suffix == 2)
-      cover = cover + '&' + randomNum
-  }
-  return cover
-}
+  return html.replace(/<img\b[^>]*>/gi, tag => {
+    const imageId = index++;
+    return tag.replace(/(\s(?:src|data-src|data-lazy-src)=)(["'])(.*?)\2/gi,
+      (match, prefix, quote, value) => {
+        const decoded = value.replace(/&amp;/g, '&');
+        if (!defaults.includes(decoded) || !/^https?:\/\//i.test(decoded)) return match;
+        const url = new URL(decoded);
+        // Stable keys avoid invalidating every page on every build.
+        url.searchParams.set('hexo_cover', String(imageId));
+        return prefix + quote + url.href.replace(/&/g, '&amp;') + quote;
+      });
+  });
+});

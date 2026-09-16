@@ -32,7 +32,7 @@ top_img: transparent
 
 ## 1. SSH配置
 
-请参考{% post_link 技术文档/软件/使用SSH  使用SSH博客%}
+请参考{% post_link 技术文档/服务部署/使用SSH  使用SSH博客%}
 
 配置config文件
 

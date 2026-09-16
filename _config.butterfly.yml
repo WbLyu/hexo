@@ -11,7 +11,7 @@
 
 nav:
   # Navigation bar logo image
-  logo: https://img.wblv66.top/hexo/favicon.png
+  logo: https://img.wblyu.top/hexo/favicon.png
   display_title: true
   # Whether to fix navigation bar
   fixed: true
@@ -64,7 +64,7 @@ code_blocks:
 # Formal:
 #   icon: link || the description || color
 social:
-  iconfont icon-github: https://github.com/WbLv66/ || Github || 
+  iconfont icon-github: https://github.com/WbLyu/ || Github || 
   iconfont icon-ORCID : https://orcid.org/0009-0009-1536-3051/ || ORCID || 
   iconfont icon-tengxunyouxiang: mailto:wb.lv@qq.com || Email || 
 
@@ -75,10 +75,10 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: https://img.wblv66.top/hexo/favicon.png
+favicon: https://img.wblyu.top/hexo/favicon.png
 
 avatar:
-  img: https://img.wblv66.top/hexo/avatar.jpg
+  img: https://img.wblyu.top/hexo/avatar.jpg
   effect: false
 
 # Disable all banner images
@@ -88,7 +88,7 @@ disable_top_img: false
 default_top_img: transparent
 
 # The banner image of index page
-index_img: https://random.wblv66.top
+index_img: https://random.wblyu.top
 
 # The banner image of archive page
 archive_img:
@@ -114,7 +114,7 @@ footer_img:  transparent
 
 # Website Background
 # Can set it to color or image url
-background: https://random.wblv66.top
+background: https://random.wblyu.top
 
 cover:
   # Disable the cover or not
@@ -124,7 +124,7 @@ cover:
   suffix: 1
   # When cover is not set, the default cover is displayed
   default_cover:
-    - https://random.wblv66.top
+    - https://random.wblyu.top
     # - xxx.jpg
 
 # Replace Broken Images
@@ -288,8 +288,6 @@ footer:
     enable: true
     version: true
   custom_text:
-    <a href="https://beian.miit.gov.cn/" target="_blank"><span>冀ICP备2025114707号-1</span></a>
-    <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010802045820" rel="noreferrer" target="_blank"><img class="icp-icon" src="https://img.wblv66.top/hexo/beian.png"><span>京公网安备11010802045820号</span></a>
     
 
 

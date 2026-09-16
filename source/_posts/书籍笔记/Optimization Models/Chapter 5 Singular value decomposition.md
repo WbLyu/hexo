@@ -48,7 +48,7 @@ $$
 $$
 其中$r$是$\bm{A}$的秩，标量$\sigma _i > 0,i=1,\cdots ,r$，表示旋转输入向量上的缩放因子，如下图所示
 
-![5.1.png](https://img.wblv66.top/optimization-models/5.1.png)
+![5.1.png](https://img.wblyu.top/optimization-models/5.1.png)
 
 $\bm{A}$的大部分相关特性都可以从其奇异值分解中推导出来。如果我们知道矩阵$\bm{A}$的SVD，那么我们也就知道了$\bm{A}$的秩、的谱范数（最大增益）以及条件数。此外，我们可以轻松获得$\bm{A}$的列空间和零空间的正交基；我们可以求解以$\bm{A}$为系数矩阵的线性方程组（参见Section第 6.4.2 节），并分析这些方程中误差的影响；我们还可以求解超定线性方程组的最小二乘解，或者欠定系统的最小范数解
 
@@ -543,7 +543,7 @@ $$
 
 考虑下图中的二维数据云：沿着大约45度方向几乎包含了数据的所有变化。相比之下，沿着大约135度方向包含的数据变化很少。这意味着，在这个例子中，数据背后的重要现象本质上沿着45度的方向是一维的。当分析维度大于3的数据时，图形直觉就无济于事，这时主成分分析就显得很有用
 
-![5.5.png](https://img.wblv66.top/optimization-models/5.5.png)
+![5.5.png](https://img.wblyu.top/optimization-models/5.5.png)
 
 设$\bm{x}_i \in \mathbb{R} ^n,i=1,\cdots ,m$为希望分析的给定数据点，记数据点的平均值为$\bar{\bm{x}} = \frac{1}{m} \sum_{i=1}^{m}\bm{x}_i$，并设$\tilde{\bm{X}}$是$n \times m$阶矩阵并包含居中后的数据点
 $$

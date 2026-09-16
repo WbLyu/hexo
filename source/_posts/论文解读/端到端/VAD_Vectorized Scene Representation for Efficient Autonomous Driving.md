@@ -41,13 +41,13 @@ top_img: transparent
 2. 通过查询交互和矢量化规划约束，隐式和显式地利用矢量化场景信息来提高规划安全性
 3. 性能好，设计简洁推理速度快
 
-![vad-1.png](https://img.wblv66.top/end-to-end/vad-1.png)
+![vad-1.png](https://img.wblyu.top/end-to-end/vad-1.png)
 
 ## 2. 相关工作
 
 ## 3. 方法
 
-![vad-1.png](https://img.wblv66.top/end-to-end/vad-2.png)
+![vad-1.png](https://img.wblyu.top/end-to-end/vad-2.png)
 
 <!-- 1. 首先使用ResNet50（backbone）从输入的多帧多视角图片提取图片特征，然后使用FPN（neck）融合多尺度特征，最后借助BEVFormer的编码器得到BEV特征
 2. 使用一组map query从个BEV特征中提取信息得到map向量和更新后的map query
@@ -107,7 +107,7 @@ $$
 
 ### 3.3 向量规划约束
 
-![vad-3.png](https://img.wblv66.top/end-to-end/vad-3.png)
+![vad-3.png](https://img.wblyu.top/end-to-end/vad-3.png)
 
 **ego-agent碰撞约束**
 

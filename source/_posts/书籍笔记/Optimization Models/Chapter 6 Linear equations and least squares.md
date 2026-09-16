@@ -111,7 +111,7 @@ $$
 其中$\bm{a}_i^\top$表示$\bm{A}$的第$i$行。
 
 上述问题有一个有趣的几何解释：由于向量$\bm{Ax}$位于$\mathcal{R}(\bm{A})$中，该问题相当于确定$\mathcal{R}(\bm{A})$中距离$\bm{y}$最近的点$\tilde{\bm{y}} = \bm{Ax}$。投影定理Section2.3节（定理 2.2）则告诉我们，这个点是$\bm{y}$在子空间$\mathcal{R}(\bm{A})$上的正交投影，如下图所示
-![6.7.png](https://img.wblv66.top/optimization-models/6.7.png)
+![6.7.png](https://img.wblyu.top/optimization-models/6.7.png)
 
 因此，我们可以应用Section 定理 2.2 来找到问题的显式解，如以下命题所示
 

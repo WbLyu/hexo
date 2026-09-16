@@ -14,7 +14,7 @@ timezone: Asia/Shanghai
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://wblv66.top
+url: https://blog.wblyu.top
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -105,10 +105,13 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: git
-  #repo改为repo: git@你的域名:/var/repo/hexo.git
-  repo: wblv66.top:/var/repo/hexo.git
-  branch: master
+  # type: git
+  # #repo改为repo: git@你的域名:/var/repo/hexo.git
+  # repo: wblv66.top:/var/repo/hexo.git
+  # branch: master
+  type: cos
+  bucket: blog-1317189963
+  region: ap-hongkong
 # katex
 markdown:
   plugins:

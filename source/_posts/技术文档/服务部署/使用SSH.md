@@ -7,7 +7,7 @@ tags:
     - Linux
 categories: 
           - 技术文档
-          - 软件
+          - 服务部署
 # keywords:
 # description:
 top_img: transparent
