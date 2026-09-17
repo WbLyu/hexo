@@ -1,4 +1,22 @@
-@font-face {
+body {
+    font-family:
+        "Noto Sans SC",
+        "PingFang SC",
+        "Microsoft YaHei",
+        "Hiragino Sans GB",
+        "Source Han Sans SC",
+        sans-serif;
+
+    font-weight: 400;
+}
+
+strong {
+    font-weight: 700;
+}
+
+
+
+/* @font-face {
     font-family: 'Noto Sans SC';
     font-style: normal;
     font-weight: 400;
@@ -22,7 +40,6 @@
 body {
     font-family: 'Noto Sans SC', sans-serif;
     font-weight: 400;
-    /* 常规使用 400 */
 }
 
 strong {
@@ -31,8 +48,7 @@ strong {
 
 
 @font-face {
-    /*字体名称，名字可以随便起，但是注意要一致，建议英文*/
     font-family: 'JetBrainsMono';
     font-display: swap;
     src: url('./font/JetBrainsMono-Bold-7.ttf') format('truetype');
-}
+} */

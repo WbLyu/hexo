@@ -88,7 +88,7 @@ disable_top_img: false
 default_top_img: transparent
 
 # The banner image of index page
-index_img: https://random.wblyu.top
+index_img: https://random.wblyu.top/background
 
 # The banner image of archive page
 archive_img:
@@ -114,17 +114,20 @@ footer_img:  transparent
 
 # Website Background
 # Can set it to color or image url
-background: https://random.wblyu.top
+background: https://random.wblyu.top/background
 
 cover:
   # Disable the cover or not
   index_enable: true
   aside_enable: true
   archives_enable: true
-  suffix: 1
   # When cover is not set, the default cover is displayed
   default_cover:
-    - https://random.wblyu.top
+    # - https://random.wblyu.top/cover
+    - /img/wallhaven-k937rm.avif
+    - /img/wallhaven-kxev76.avif
+    - /img/wallhaven-wemx96.avif
+    - /img/wallhaven-ym7v37.avif
     # - xxx.jpg
 
 # Replace Broken Images
@@ -1030,11 +1033,11 @@ instantpage: false
 # Lazyload
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
-  enable: false
+  enable: true
   # Specify the field to use lazyload (site or post)
   field: site
   placeholder:
-  blur: false
+  blur: true
 
 # PWA
 # See https://github.com/JLHwung/hexo-offline
@@ -1079,6 +1082,7 @@ inject:
   #  - <link rel="stylesheet" href="/self/duotone.css">
     # - <link rel="stylesheet" href="/xxx.css">
   bottom:
+    - <script src="/js/random-cover.js"></script>
     # - <script src="xxxx"></script>
 
 # CDN Settings
@@ -1092,7 +1096,7 @@ CDN:
   third_party_provider: unpkg
 
   # Add version number to url, true or false
-  version: false
+  version: true
 
   # Custom format
   # For example: https://cdn.staticfile.org/${cdnjs_name}/${version}/${min_cdnjs_file}

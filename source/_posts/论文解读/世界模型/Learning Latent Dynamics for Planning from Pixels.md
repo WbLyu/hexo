@@ -83,11 +83,25 @@ $$
 
 $$
 \begin{gathered}
-s_t \sim p(s_t \mid s_{t-1},\hat{a}_{t-1}) \\
+s_t \sim p(s_t \mid s_{t-1},\hat{a}_{t-1}) = \mathcal N \left( \mu_\theta(z), \sigma_x^2I \right) \\
 \hat{o}_t \sim p(\hat{o}_t \mid s_t) \\
 \hat{r}_t \sim p(\hat{r}_t \mid s_t)
 \end{gathered}
 $$
+
+公式中隐含两个条件独立假设
+
+$$
+\begin{gathered}
+p(s_t \mid s_{1:t-1},o_{1:t-1},a_{1:t-1}) = p(s_t \mid s_{t-1},a_{t-1})\\
+p(o_t \mid s_{1:t},o_{1:t-1},a_{1:t}) = p(o_t \mid s_t)
+\end{gathered}
+$$
+
+意味着
+
+1. 只需要上一时刻的状态和动作，就可以得到这一时刻的状态
+2. 只需要当前时刻的状态，就可以生成当前时刻的观测
 
 如果这些模型都是`线性高斯模型`，那么可以利用`卡尔曼滤波`，根据当前的真实观测计算出当前潜状态的分布，即状态后验分布。可以理解为现在已经看到真实$o_t$了，再反过来判断$s_t$。
 
@@ -149,3 +163,90 @@ $$
 ## 4. 潜变量多步预测约束(Latent Overshooting)
 
 标准证据下界(Evidence Lower Bound, ELBO) 每一步都从编码器输出的**后验状态出发**，训练一次状态转移，因此它**只接受一步预测监督**；但planning时模型必须从当前状态出发连续预测很多步，中间没有真实观测纠正。由于**模型容量有限**（神经网络能表达的函数复杂度是有限的）且**分布族受限**（模型里很多分布被假定为特定分布），模型在一步预测时表现良好，并不意味着在多步预测同样表现良好。因此文章直接从较早的后验出发，连续预测多步，并让得到的多步先验与未来真实观测对应的后验对齐，从而显式训练长期潜动力学。
+
+
+
+公式三推导，此推导是将VAE的单步形式扩展为多步并引入动作输入
+
+我们真正想要的是最大化观测数据的似然即
+
+> 给定动作序列$a_{1:T}$，模型能够给真实观测序列$o_{1:T}$很高的概率
+
+$$
+\max \log p(o_{1:T} \mid a_{1:T}) 
+$$
+
+直接建模这个概率分布很困难，可以引入潜状态
+
+$$
+\boxed{
+p(o_{1:T} \mid a_{1:T}) = \int p (o_{1:T} , s_{1:T}\mid a_{1:T}) d s_{1:T}
+}
+$$
+
+参考VAE的推理过程，积分中乘除同一个近似后验$q(s_{1:T}\mid o_{1:T},a_{1:T})$得到
+
+$$
+p(o_{1:T} \mid a_{1:T}) = \int q(s_{1:T}\mid o_{1:T},a_{1:T}) \frac{p (o_{1:T} , s_{1:T}\mid a_{1:T})}{q(s_{1:T}\mid o_{1:T},a_{1:T})}  d s_{1:T}
+$$
+
+根据期望的定义有
+
+$$
+\boxed{
+p(o_{1:T} \mid a_{1:T}) = \mathbb E_{q(s_{1:T}\mid o_{1:T},a_{1:T})} \left[\frac{p(o_{1:T},s_{1:T}\mid a_{1:T})}{q(s_{1:T}\mid o_{1:T},a_{1:T})}\right]
+}
+$$
+
+**首先处理分子$p (o_{1:T} , s_{1:T}\mid a_{1:T})$**
+
+先从从最一般的链式法则出发：
+
+$$
+\begin{aligned}
+p(o_{1:T},s_{1:T} \mid a_{1:T}) &= p( s_1,o_1 \mid  a_{1:T}) p( s_2,o_2 \mid s_1,o_1, a_{1:T}) \cdots  p( s_T,o_T \mid s_{1:T-1},o_{1:T-1}, a_{1:T}) \\
+&= \prod_{t=1}^{T} p( s_t,o_t \mid s_{<t},o_{<t}, a_{1:T}) \\
+&= \prod_{t=1}^{T} p( s_t\mid s_{<t},o_{<t}, a_{1:T})p( o_t\mid s_{\leq t},o_{<t}, a_{1:T})
+\end{aligned}
+$$
+
+这个可以类比$p(X,Y,Z) = p(X)p(Y \mid X) p(Z \mid X,Y)$得到，此式只是概率论的链式法则，具有普适性
+
+根据论文中的条件独立假设可以得到
+
+$$
+\boxed{
+p(o_{1:T},s_{1:T} \mid a_{1:T}) = \prod_{t=1}^{T} p( s_t\mid s_{t-1}, a_{t-1})p( o_t\mid s_t)
+}
+$$
+
+**然后处理分母$q(s_{1:T}\mid o_{1:T},a_{1:T})$**
+
+仿照上面的方式：
+
+$$
+\begin{aligned}
+q(s_{1:T} \mid o_{1:T},a_{1:T}) &= q( s_1\mid  o_{1:T},a_{1:T}) q( s_2\mid  s_1,o_{1:T},a_{1:T}) \cdots  q( s_T\mid  s_{1:T-1},o_{1:T},a_{1:T}) \\
+&= \prod_{t=1}^{T} q( s_t\mid s_{<t},o_{1:T}, a_{1:T})
+\end{aligned}
+$$
+
+在处理单步编码器的时候有两个选择：**在训练时要不要传入未来观测**，作者将其区分为`filtering posterior`（不传入） 和 `full smoothing posterior`（传入）。作者考虑到PlaNet最终为了在线planning，于是选择了`filtering posterior`即$q(s_t\mid s_{t-1},a_{t-1},o_t)$
+
+> 这里的思想和Transformer、BERT的很像，Transformer选择了在训练时只传入历史信息即**Causal Attention**，BERT选择了在训练时传入历史和未来信息即**Bidirectional Attention**
+
+可以得到
+
+$$
+\boxed{
+q(s_{1:T} \mid o_{1:T},a_{1:T}) = \prod_{t=1}^{T} q(s_t\mid s_{t-1},a_{t-1},o_t)
+}
+$$
+
+这样将`p`和`q`的多步条件概率变成了单步条件概率的连乘，将分解形式代入可以得到
+
+$$
+\boxed{
+p(o_{1:T} \mid a_{1:T}) = \mathbb E_{q(s_{1:T}\mid o_{1:T},a_{1:T})} \left[\frac{p(o_{1:T},s_{1:T}\mid a_{1:T})}{q(s_{1:T}\mid o_{1:T},a_{1:T})}\right]
+}
+$$
