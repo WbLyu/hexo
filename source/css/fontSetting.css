@@ -1,54 +1,57 @@
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("./font/JetBrainsMono-SemiBold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+}
+
 body {
     font-family:
         "Noto Sans SC",
         "PingFang SC",
         "Microsoft YaHei",
-        "Hiragino Sans GB",
-        "Source Han Sans SC",
         sans-serif;
 
-    font-weight: 400;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.75;
 }
 
-strong {
-    font-weight: 700;
+/* 行内代码和代码块 */
+code,
+pre,
+kbd,
+samp,
+.highlight,
+.highlight code,
+.highlight pre {
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace !important;
+
+    font-weight: 600;
 }
 
-
-
-/* @font-face {
-    font-family: 'Noto Sans SC';
-    font-style: normal;
-    font-weight: 400;
-    src: url('./font/NotoSansSC-Medium.otf') format('opentype');
+/* 代码块 */
+.highlight,
+.highlight pre,
+#article-container figure.highlight {
+    font-size: 18px;
+    line-height: 1.65;
 }
 
-@font-face {
-    font-family: 'Noto Sans SC';
-    font-style: normal;
-    font-weight: 700;
-    src: url('./font/NotoSansSC-Bold.otf') format('opentype');
+/* 行内代码 */
+#article-container :not(pre) > code {
+    font-size: 0.95em;
+    color: #b94a48;
+    font-weight: 600;
+    background: rgba(200, 90, 84, 0.08);
+    padding: 0.1em 0.3em;
 }
 
-@font-face {
-    font-family: 'Noto Sans SC';
-    font-style: normal;
-    font-weight: 900;
-    src: url('./font/NotoSansSC-Black.otf') format('opentype');
+code,
+pre {
+    font-variant-ligatures: none;
 }
-
-body {
-    font-family: 'Noto Sans SC', sans-serif;
-    font-weight: 400;
-}
-
-strong {
-    font-weight: 900;
-}
-
-
-@font-face {
-    font-family: 'JetBrainsMono';
-    font-display: swap;
-    src: url('./font/JetBrainsMono-Bold-7.ttf') format('truetype');
-} */

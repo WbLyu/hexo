@@ -164,8 +164,6 @@ $$
 
 标准证据下界(Evidence Lower Bound, ELBO) 每一步都从编码器输出的**后验状态出发**，训练一次状态转移，因此它**只接受一步预测监督**；但planning时模型必须从当前状态出发连续预测很多步，中间没有真实观测纠正。由于**模型容量有限**（神经网络能表达的函数复杂度是有限的）且**分布族受限**（模型里很多分布被假定为特定分布），模型在一步预测时表现良好，并不意味着在多步预测同样表现良好。因此文章直接从较早的后验出发，连续预测多步，并让得到的多步先验与未来真实观测对应的后验对齐，从而显式训练长期潜动力学。
 
-
-
 公式三推导，此推导是将VAE的单步形式扩展为多步并引入动作输入
 
 我们真正想要的是最大化观测数据的似然即
@@ -173,14 +171,20 @@ $$
 > 给定动作序列$a_{1:T}$，模型能够给真实观测序列$o_{1:T}$很高的概率
 
 $$
-\max \log p(o_{1:T} \mid a_{1:T}) 
+\max \log p(o_{1:T} \mid a_{1:T})
 $$
 
 直接建模这个概率分布很困难，可以引入潜状态
 
 $$
 \boxed{
-p(o_{1:T} \mid a_{1:T}) = \int p (o_{1:T} , s_{1:T}\mid a_{1:T}) d s_{1:T}
+\begin{aligned}
+p(o_{1:T} \mid a_{1:T}) =& \int p (o_{1:T} , s_{1:T}\mid a_{1:T}) d s_{1:T} \\
+=& \int p (s_{1:T}\mid a_{1:T})p (o_{1:T}\mid s_{1:T})  d s_{1:T} \\
+=& \mathbb{E}_{p (s_{1:T}\mid a_{1:T})} \left[  p (o_{1:T}\mid s_{1:T})\right]  \\
+=& \mathbb{E}_{p (s_{1:T}\mid a_{1:T})} \left[ \prod_{t=1}^{T}  p (o_t\mid s_t)\right]
+\end{aligned}
+
 }
 $$
 
@@ -200,7 +204,7 @@ $$
 
 **首先处理分子$p (o_{1:T} , s_{1:T}\mid a_{1:T})$**
 
-先从从最一般的链式法则出发：
+先从从最一般的链式法则出发（也可以不使用链式法则而是将$p (o_{1:T} , s_{1:T}\mid a_{1:T})$拆为$p (s_{1:T}\mid a_{1:T})p (o_{1:T}\mid s_{1:T})$）
 
 $$
 \begin{aligned}
@@ -243,10 +247,125 @@ q(s_{1:T} \mid o_{1:T},a_{1:T}) = \prod_{t=1}^{T} q(s_t\mid s_{t-1},a_{t-1},o_t)
 }
 $$
 
-这样将`p`和`q`的多步条件概率变成了单步条件概率的连乘，将分解形式代入可以得到
+但是$s_{t-1}$本身并不是独立得到的，而是由更早时刻递推而来：$q(s_{t-1}\mid s_{t-2},a_{t-2},o_{t-1})$。依次递推，当前时刻潜状态的后验可以从整体上概括表示为$q(s_{t} \mid o_{\leq t},a_{<t})$，因此
 
 $$
 \boxed{
-p(o_{1:T} \mid a_{1:T}) = \mathbb E_{q(s_{1:T}\mid o_{1:T},a_{1:T})} \left[\frac{p(o_{1:T},s_{1:T}\mid a_{1:T})}{q(s_{1:T}\mid o_{1:T},a_{1:T})}\right]
+q(s_{1:T} \mid o_{1:T},a_{1:T}) = \prod_{t=1}^{T} q(s_{t} \mid o_{\leq t},a_{<t})
+}
+$$
+
+> 这是论文采用的记号写法；严格区分时，$q(s_t\mid s_{t-1},a_{t-1},o_t)$与$q(s_{t} \mid o_{\leq t},a_{<t})$并不完全相同。
+
+将将分子和分母分解形式代回观测似然可以得到
+
+$$
+\boxed{
+p(o_{1:T} \mid a_{1:T}) = \mathbb E_{q(s_{1:T}\mid o_{1:T},a_{1:T})} \left[\prod_{t=1}^{T} \frac{p( s_t\mid s_{t-1}, a_{t-1})p( o_t\mid s_t)}{q(s_{t} \mid o_{\leq t},a_{<t})}\right]
+}
+$$
+
+两边取对数，并根据Jensen 不等式$\log \mathbb E[X]\geq\mathbb E[\log X]$可以得到
+
+$$
+\log p(o_{1:T} \mid a_{1:T}) \geq \mathbb E_{ q(s_{1:T}\mid o_{1:T},a_{1:T})} \left[ \log \prod_{t=1}^{T} \frac{p( s_t\mid s_{t-1}, a_{t-1})p( o_t\mid s_t)}{q(s_{t} \mid o_{\leq t},a_{<t})}\right]
+$$
+
+进一步变形得到
+
+$$
+\log p(o_{1:T} \mid a_{1:T}) \geq \mathbb E_q \left[  \sum_{t=1}^{T} \log p( s_t\mid s_{t-1}, a_{t-1}) + \log p( o_t\mid s_t)- \log q(s_{t} \mid o_{\leq t},a_{<t})\right]
+$$
+
+利用期望的线性性质可以得到
+
+$$
+\boxed{
+\begin{aligned}
+\log p(o_{1:T}\mid a_{1:T}) \geq \sum_{t=1}^{T} \Bigg(&\mathbb E_q[\log p(o_t\mid s_t)]\\
+&+\mathbb E_q \left[\log p(s_t\mid s_{t-1},a_{t-1})-\log q(s_t\mid o_{\le t},a_{<t})\right]\Bigg)
+\end{aligned}
+}
+$$
+
+**首先考虑第一项**
+
+把期望按定义写成积分：
+
+$$
+\mathbb E_q[\log p(o_t\mid s_t)] = \int q(s_{1:T} \mid o,a) \log p(o_t\mid s_t) d s_{1:T}
+$$
+
+> 这里的$\int \Box  d s_{1:T}$表示对序列的积分，可以展开为$\int \int \int \cdots \Box  d s_1 d s_2 \cdots d s_T$
+
+因为$\log p(o_t\mid s_t)$只与$s_t$有关，因此将其拆分为
+
+$$
+\mathbb E_q[\log p(o_t\mid s_t)] = \int \left[  \int q(s_{1:T} \mid o,a) d s_{-t} \right] \log p(o_t\mid s_t) ds_t
+$$
+
+其中$d s_{-t} = d s_1 \cdots d s_{t-1} d s_{t+1} \cdots ds_T$，那么$\left[  \int q(s_{1:T} \mid o,a) d s_{-t} \right]$应该可以把除$s_t$的项全部积分消去，从而得到$q(s_{t} \mid o,a)$。由于作者选择了`filtering posterior`，因此$q(s_{t} \mid o,a) = q(s_{t} \mid o_{\leq t},a_{<t})$。最终形式为
+
+$$
+\boxed{
+\begin{aligned}
+\mathbb E_q[\log p(o_t\mid s_t)] &= \int q(s_{t} \mid o_{\leq t},a_{<t})\log p(o_t\mid s_t) ds_t  \\
+&= \mathbb{E}_{q(s_{t} \mid o_{\leq t},a_{<t})} \left[ \log p(o_t\mid s_t) \right]
+\end{aligned}
+}
+$$
+
+**然后考虑第二三项**
+
+现在考虑
+
+$$
+\mathbb E_{q(s_{1:T}\mid o,a)}\left[\log p(s_t\mid s_{t-1},a_{t-1})-\log q(s_t\mid o_{\le t},a_{<t})\right]
+$$
+
+这里被积函数同时涉及$s_{t-1},s_t$，所以只能把除此之外的状态积分掉。写成积分：
+
+$$
+\int q(s_{1:T}\mid o,a) \Big[ \log p(s_t\mid s_{t-1},a_{t-1}) - \log q(s_t\mid o_{\le t},a_{<t}) \Big] ds_{1:T}
+$$
+
+先积分掉$s_1,\ldots,s_{t-2},s_{t+1},\cdots,s_T$得到
+
+$$
+\begin{aligned}
+\int\int & q(s_{t-1},s_t\mid o_{1:T},a_{1:T}) \Big[ \log p(s_t\mid s_{t-1},a_{t-1}) - \log q(s_t\mid o_{\le t},a_{<t}) \Big] ds_{t-1} ds_t  \\
+=\int\int & q(s_{t-1}\mid o_{1:T},a_{1:T})q(s_t\mid s_{t-1},o_{1:T},a_{1:T}) \\
+&\Big[ \log p(s_t\mid s_{t-1},a_{t-1}) - \log q(s_t\mid o_{\le t},a_{<t}) \Big] ds_{t-1} ds_t  
+\end{aligned}
+$$
+
+由于作者选择了`filtering posterior`，因此$q(s_{t-1}\mid o_{1:T},a_{1:T}) = q(s_{t-1}\mid o_{\leq t-1},a_{<t-1})$以及$q(s_t\mid s_{t-1},o_{1:T},a_{1:T})=q(s_t\mid o_{\leq t},a_{<t})$。再变为期望
+
+$$
+\mathbb E_{q(s_{t-1}\mid o_{\leq t-1},a_{<t-1})}\left[E_{q(s_t\mid o_{\leq t},a_{<t})}\left[\log p(s_t\mid s_{t-1},a_{t-1})-\log q(s_t\mid o_{\le t},a_{<t})\right]\right]
+$$
+
+内层期望可以写成KL散度
+
+$$
+\begin{aligned}
+&E_{q(s_t\mid o_{\leq t},a_{<t})}\left[\log p(s_t\mid s_{t-1},a_{t-1})-\log q(s_t\mid o_{\le t},a_{<t})\right] \\
+=& -D_{\mathrm{KL}} \Big(q(s_t\mid o_{\leq t},a_{<t}) \Vert p(s_t\mid s_{t-1},a_{t-1})\Big)
+    \\
+\end{aligned}
+$$
+
+最终得到
+
+$$
+\boxed{
+\begin{align*}
+&\quad \log p(o_{1:T} \mid a_{1:T})\\
+&\begin{aligned}
+\geq \sum_{t=1}^{T} & \Bigg(\underbrace{\mathbb{E}_{q(s_{t} \mid o_{\leq t},a_{<t})} \left[ \log p(o_t\mid s_t) \right]}_{\text{reconstruction}}\\
+&- \underbrace{\mathbb E_{q(s_{t-1}\mid o_{\leq t-1},a_{<t-1})}\left[ D_{\mathrm{KL}} \Big(q(s_t\mid o_{\leq t},a_{<t}) \Vert p(s_t\mid s_{t-1},a_{t-1})\Big) \right]}_{\text{complexity}}
+\Bigg)
+\end{aligned}
+\end{align*}
 }
 $$
