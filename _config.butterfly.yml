@@ -1034,10 +1034,12 @@ instantpage: false
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
   enable: true
+  # Use browser's native lazyload instead of vanilla-lazyload
+  native: false
   # Specify the field to use lazyload (site or post)
   field: site
   placeholder:
-  blur: true
+  blur: false
 
 # PWA
 # See https://github.com/JLHwung/hexo-offline
@@ -1139,7 +1141,7 @@ CDN:
     # giscus:
     # instantpage:
     # instantsearch:
-    # katex:
+    katex: https://unpkg.com/katex@0.18.7/dist/katex.min.css
     # katex_copytex:
     # lazyload:
     # local_search:

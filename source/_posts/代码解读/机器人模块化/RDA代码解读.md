@@ -107,7 +107,7 @@ $$
 约束包含
 $$
 \begin{align*}
-& \operatorname{constraints}_{nav}：\\
+& \operatorname{constraints}_{nav}:\\
 & \bm{s}_{t+1} = A_t \bm{s}_t + B_t \bm{u}_t + C_t, \forall t \\
 & \lVert \bm{v}_{t+1} - \bm{v}_t \rVert \leq  a_{\max}, \forall t \\
 & \lVert \bm{u}_t \rVert \leq  u_{\max},\forall t \\
@@ -129,7 +129,7 @@ $$
 约束包含
 $$
 \begin{align*}
-& \operatorname{constraints}_{su}：\\
+& \operatorname{constraints}_{su}:\\
 & R'_t - (J' \phi')_t + J'_t \bm{\theta}_t  - \bm{R}_t =0, \forall t \\
 & \bm{d}_t \in [d_{\min }, d_{\max}], \forall t \\
 & \bm{I}_{t,m} = (\lambda D)_{t,m}\bm{s}_t-(\lambda b)_{t,m} - \mu _{t,m}^\top h - \bm{d}_t + \zeta _{t,m},\forall t,m \\
@@ -165,7 +165,7 @@ $$
 约束包含
 $$
 \begin{align*}
-& \operatorname{constraints}_{m}：\\
+& \operatorname{constraints}_{m}:\\
 & \lVert D_{t,m}^\top \bm{\lambda}_{t,m}  \rVert_* \leq 1, \forall t,m \\
 & \bm{\lambda}_{t,m} \succeq _{\mathcal{O}^*_m} 0, \forall t \\
 & \bm{\mu}_{t,m} \succeq _{\mathcal{K}^*_r} 0, \forall t \\
