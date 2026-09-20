@@ -164,529 +164,359 @@ $$
 
 标准证据下界(Evidence Lower Bound, ELBO) 每一步都从编码器输出的**后验状态出发**，训练一次状态转移，因此它**只接受一步预测监督**；但planning时模型必须从当前状态出发连续预测很多步，中间没有真实观测纠正。由于**模型容量有限**（神经网络能表达的函数复杂度是有限的）且**分布族受限**（模型里很多分布被假定为特定分布），模型在一步预测时表现良好，并不意味着在多步预测同样表现良好。因此文章直接从较早的后验出发，连续预测多步，并让得到的多步先验与未来真实观测对应的后验对齐，从而显式训练长期潜动力学。
 
-
 3.X PlaNet 中的 ELBO 推导
-首先需要明确一点，PlaNet 虽然将 VAE 中单个潜变量 \(z\) 扩展为了随时间变化的潜状态序列 \(s_{1:T}\)，并且加入了动作序列 \(a_{1:T}\)，但其根本目标仍然没有改变：
-给定动作序列 \(a_{1:T}\)，希望模型能够对真实观测序列 \(o_{1:T}\) 赋予尽可能高的概率。
+首先需要明确一点，PlaNet 虽然将 VAE 中单个潜变量 $z$ 扩展为了随时间变化的潜状态序列 $s_{1:T}$，并且加入了动作序列 $a_{1:T}$，但其根本目标仍然没有改变：
+给定动作序列 $a_{1:T}$，希望模型能够对真实观测序列 $o_{1:T}$ 赋予尽可能高的概率。
 
 因此真正希望最大化的是
-\[
-\boxed{
-\max_\theta \log p_\theta(o_{1:T}\mid a_{1:T})
-}
-\]PlaNet 将环境建模为 latent state-space model，其中
-\[
+
+$$
+\boxed{ \max_\theta \log p_\theta(o_{1:T}\mid a_{1:T}) }
+$$
+
+PlaNet 将环境建模为 latent state-space model，其中
+
+$$
 p_\theta(s_t\mid s_{t-1},a_{t-1})
-\]表示状态转移模型，
-\[
+$$
+
+表示状态转移模型，
+
+$$
 p_\theta(o_t\mid s_t)
-\]表示观测模型。论文正是这样定义 latent dynamics 的。
+$$
+
+表示观测模型。论文正是这样定义 latent dynamics 的。
 3.X.1 构造序列形式的 ELBO
-由于潜状态 \(s_{1:T}\) 不可直接观测，对其进行边缘化：
-\[
-p_\theta(o_{1:T}\mid a_{1:T})
-=
-\int
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-\,ds_{1:T}.
-\]根据生成模型的条件独立关系：
-\[
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-=
-\prod_{t=1}^{T}
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-p_\theta(o_t\mid s_t).
-\]因此
-\[
-\boxed{
-p_\theta(o_{1:T}\mid a_{1:T})
-=
-\int
-\prod_{t=1}^{T}
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-p_\theta(o_t\mid s_t)
-\,ds_{1:T}
-}
-\]这就是论文公式 3 左侧对应的边缘似然形式。
+由于潜状态 $s_{1:T}$ 不可直接观测，对其进行边缘化：
+
+$$
+p_\theta(o_{1:T}\mid a_{1:T}) = \int p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) \,ds_{1:T}.
+$$
+
+根据生成模型的条件独立关系：
+
+$$
+p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) = \prod_{t=1}^{T} p_\theta(s_t\mid s_{t-1},a_{t-1}) p_\theta(o_t\mid s_t).
+$$
+
+因此
+
+$$
+\boxed{ p_\theta(o_{1:T}\mid a_{1:T}) = \int \prod_{t=1}^{T} p_\theta(s_t\mid s_{t-1},a_{t-1}) p_\theta(o_t\mid s_t) \,ds_{1:T} }
+$$
+
+这就是论文公式 3 左侧对应的边缘似然形式。
 也可以先写成
-\[
-p_\theta(o_{1:T}\mid a_{1:T})
-=
-\mathbb E_{p_\theta(s_{1:T}\mid a_{1:T})}
-\left[
-\prod_{t=1}^{T}
-p_\theta(o_t\mid s_t)
-\right].
-\]论文附录公式 8 正是先从这个期望形式开始。
+
+$$
+p_\theta(o_{1:T}\mid a_{1:T}) = \mathbb E_{p_\theta(s_{1:T}\mid a_{1:T})} \left[ \prod_{t=1}^{T} p_\theta(o_t\mid s_t) \right].
+$$
+
+论文附录公式 8 正是先从这个期望形式开始。
 但这个边缘似然仍然难以直接计算，因此与 VAE 一样，引入近似后验
-\[
+
+$$
 q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}).
-\]论文使用 variational encoder 来近似无法直接求得的 state posterior。
+$$
+
+论文使用 variational encoder 来近似无法直接求得的 state posterior。
 在积分中乘除同一个近似后验：
-\[
+
+$$
 \begin{aligned}
-p_\theta(o_{1:T}\mid a_{1:T})
-={}&
-\int
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-\\
-&\cdot
-\frac{
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-}{
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-}
-ds_{1:T}.
+p_\theta(o_{1:T}\mid a_{1:T}) ={}& \int q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) \\
+&\cdot \frac{ p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) }{ q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) } ds_{1:T}.
 \end{aligned}
-\]根据期望定义：
-\[
-\boxed{
-p_\theta(o_{1:T}\mid a_{1:T})
-=
-\mathbb E_{q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})}
-\left[
-\frac{
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-}{
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-}
-\right].
-}
-\]因此
-\[
-\log p_\theta(o_{1:T}\mid a_{1:T})
-=
-\log
-\mathbb E_q
-\left[
-\frac{
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-}{
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-}
-\right].
-\]由于 \(\log\) 为凹函数，根据 Jensen 不等式：
-\[
-\log\mathbb E[Y]
-\geq
-\mathbb E[\log Y],
-\]有
-\[
+$$
+
+根据期望定义：
+
+$$
+\boxed{ p_\theta(o_{1:T}\mid a_{1:T}) = \mathbb E_{q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})} \left[ \frac{ p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) }{ q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) } \right]. }
+$$
+
+因此
+
+$$
+\log p_\theta(o_{1:T}\mid a_{1:T}) = \log \mathbb E_q \left[ \frac{ p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) }{ q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) } \right].
+$$
+
+由于 $\log$ 为凹函数，根据 Jensen 不等式：
+
+$$
+\log\mathbb E[Y] \geq \mathbb E[\log Y],
+$$
+
+有
+
+$$
 \begin{aligned}
-\log p_\theta(o_{1:T}\mid a_{1:T})
-\geq
-\mathbb E_q
-\left[
-\log
-\frac{
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-}{
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-}
-\right].
+\log p_\theta(o_{1:T}\mid a_{1:T}) \geq \mathbb E_q \left[ \log \frac{ p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) }{ q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) } \right].
 \end{aligned}
-\]定义右侧为序列模型的 ELBO：
-\[
-\boxed{
-\mathcal L_{\mathrm{ELBO}}
-=
-\mathbb E_q
-\left[
-\log
-\frac{
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-}{
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-}
-\right]
-}
-\]因此：
-\[
-\boxed{
-\log p_\theta(o_{1:T}\mid a_{1:T})
-\geq
-\mathcal L_{\mathrm{ELBO}}
-}
-\]所以 PlaNet 的公式 3 本质上依旧是一个 ELBO。
+$$
+
+定义右侧为序列模型的 ELBO：
+
+$$
+\boxed{ \mathcal L_{\mathrm{ELBO}} = \mathbb E_q \left[ \log \frac{ p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) }{ q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) } \right] }
+$$
+
+因此：
+
+$$
+\boxed{ \log p_\theta(o_{1:T}\mid a_{1:T}) \geq \mathcal L_{\mathrm{ELBO}} }
+$$
+
+所以 PlaNet 的公式 3 本质上依旧是一个 ELBO。
 3.X.2 ELBO 与精确序列后验的关系
 和普通 VAE 完全一样，PlaNet 的 ELBO 与真实 posterior 之间也存在关系。
 考虑
-\[
-D_{\mathrm{KL}}
-\left(
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-\Vert
-p_\theta(s_{1:T}\mid o_{1:T},a_{1:T})
-\right).
-\]根据 KL 定义：
-\[
+
+$$
+D_{\mathrm{KL}} \left( q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) \Vert p_\theta(s_{1:T}\mid o_{1:T},a_{1:T}) \right).
+$$
+
+根据 KL 定义：
+
+$$
 \begin{aligned}
-D_{\mathrm{KL}}
-={}&
-\mathbb E_q
-\left[
-\log
-\frac{
-q_\phi(s_{1:T}\mid o_{1:T},a_{1:T})
-}{
-p_\theta(s_{1:T}\mid o_{1:T},a_{1:T})
-}
-\right].
+D_{\mathrm{KL}} ={}& \mathbb E_q \left[ \log \frac{ q_\phi(s_{1:T}\mid o_{1:T},a_{1:T}) }{ p_\theta(s_{1:T}\mid o_{1:T},a_{1:T}) } \right].
 \end{aligned}
-\]根据贝叶斯公式：
-\[
-p_\theta(s_{1:T}\mid o_{1:T},a_{1:T})
-=
-\frac{
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-}{
-p_\theta(o_{1:T}\mid a_{1:T})
-}.
-\]代入：
-\[
+$$
+
+根据贝叶斯公式：
+
+$$
+p_\theta(s_{1:T}\mid o_{1:T},a_{1:T}) = \frac{ p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) }{ p_\theta(o_{1:T}\mid a_{1:T}) }.
+$$
+
+代入：
+
+$$
 \begin{aligned}
-D_{\mathrm{KL}}
-=
-\mathbb E_q
-\Big[
-&
-\log q_\phi(s_{1:T}\mid o,a)
-\\
-&-
-\log p_\theta(o_{1:T},s_{1:T}\mid a)
-\\
-&+
-\log p_\theta(o_{1:T}\mid a)
-\Big].
+D_{\mathrm{KL}} = \mathbb E_q \Big[ & \log q_\phi(s_{1:T}\mid o,a) \\
+&- \log p_\theta(o_{1:T},s_{1:T}\mid a) \\
+&+ \log p_\theta(o_{1:T}\mid a) \Big].
 \end{aligned}
-\]由于
-\[
+$$
+
+由于
+
+$$
 \log p_\theta(o_{1:T}\mid a_{1:T})
-\]与潜状态无关，可以提出期望，因此
-\[
-\boxed{
-\log p_\theta(o_{1:T}\mid a_{1:T})
-=
-\mathcal L_{\mathrm{ELBO}}
-+
-D_{\mathrm{KL}}
-\left(
-q_\phi(s_{1:T}\mid o,a)
-\Vert
-p_\theta(s_{1:T}\mid o,a)
-\right)
-}
-\]这与普通 VAE 的关系完全相同。
+$$
+
+与潜状态无关，可以提出期望，因此
+
+$$
+\boxed{ \log p_\theta(o_{1:T}\mid a_{1:T}) = \mathcal L_{\mathrm{ELBO}} + D_{\mathrm{KL}} \left( q_\phi(s_{1:T}\mid o,a) \Vert p_\theta(s_{1:T}\mid o,a) \right) }
+$$
+
+这与普通 VAE 的关系完全相同。
 所以 PlaNet 中 ELBO 也同时承担两个作用：
-1. 作为难以计算的 \(\log p_\theta(o_{1:T}\mid a_{1:T})\) 的可优化下界；
+1. 作为难以计算的 $\log p_\theta(o_{1:T}\mid a_{1:T})$ 的可优化下界；
 2. 推动 approximate posterior 接近真实 sequence posterior。
 3.X.3 将序列 ELBO 化为 PlaNet 可计算的形式
 根据 latent state-space model 的联合分布：
-\[
-p_\theta(o_{1:T},s_{1:T}\mid a_{1:T})
-=
-\prod_{t=1}^{T}
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-p_\theta(o_t\mid s_t).
-\]论文采用 filtering posterior 来推断当前状态，并在公式 3 / 附录公式 8 中记作
-\[
+
+$$
+p_\theta(o_{1:T},s_{1:T}\mid a_{1:T}) = \prod_{t=1}^{T} p_\theta(s_t\mid s_{t-1},a_{t-1}) p_\theta(o_t\mid s_t).
+$$
+
+论文采用 filtering posterior 来推断当前状态，并在公式 3 / 附录公式 8 中记作
+
+$$
 q_\phi(s_t\mid o_{\le t},a_{<t}).
-\]论文说明采用 filtering posterior 是因为模型最终用于在线 planning。
+$$
+
+论文说明采用 filtering posterior 是因为模型最终用于在线 planning。
 代入 ELBO：
-\[
+
+$$
 \begin{aligned}
-\mathcal L_{\mathrm{ELBO}}
-=
-\mathbb E_q
-\left[
-\log
-\frac{
-\prod_{t=1}^{T}
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-p_\theta(o_t\mid s_t)
-}{
-\prod_{t=1}^{T}
-q_\phi(s_t\mid o_{\le t},a_{<t})
-}
-\right].
+\mathcal L_{\mathrm{ELBO}} = \mathbb E_q \left[ \log \frac{ \prod_{t=1}^{T} p_\theta(s_t\mid s_{t-1},a_{t-1}) p_\theta(o_t\mid s_t) }{ \prod_{t=1}^{T} q_\phi(s_t\mid o_{\le t},a_{<t}) } \right].
 \end{aligned}
-\]利用
-\[
-\log\prod_t x_t
-=
-\sum_t\log x_t,
-\]得到：
+$$
+
+利用
+
+$$
+\log\prod_t x_t = \sum_t\log x_t,
+$$
+
+得到：
+
+$$
 \begin{aligned}
-\mathcal L_{\mathrm{ELBO}}
-=
-\mathbb E_q
-\left[
-\sum_{t=1}^{T}
-\Big(
-&
-\log p_\theta(o_t\mid s_t)
-\\
-&+
-\log p_\theta(s_t\mid s_{t-1},a_{t-1})
-\\
-&-
-\log q_\phi(s_t\mid o_{\le t},a_{<t})
-\Big)
-\right].
-\end{aligned}第一项：观测数据拟合项
+\mathcal L_{\mathrm{ELBO}} = \mathbb E_q \left[ \sum_{t=1}^{T} \Big( & \log p_\theta(o_t\mid s_t) \\
+&+ \log p_\theta(s_t\mid s_{t-1},a_{t-1}) \\
+&- \log q_\phi(s_t\mid o_{\le t},a_{<t}) \Big) \right].
+\end{aligned}
+$$
+
+第一项：观测数据拟合项
 考虑
-\[
+
+$$
 \mathbb E_q[\log p_\theta(o_t\mid s_t)].
-\]由于被积函数只依赖 \(s_t\)，将其余潜状态积分掉：
-\[
-\boxed{
-\mathbb E_q[\log p_\theta(o_t\mid s_t)]
-=
-\mathbb E_{
-q_\phi(s_t\mid o_{\le t},a_{<t})
-}
-[
-\log p_\theta(o_t\mid s_t)
-]
-}
-\]这与 VAE 中
-\[
-\mathbb E_{q(z\mid x)}
-[\log p_\theta(x\mid z)]
-\]完全对应。
+$$
+
+由于被积函数只依赖 $s_t$，将其余潜状态积分掉：
+
+$$
+\boxed{ \mathbb E_q[\log p_\theta(o_t\mid s_t)] = \mathbb E_{ q_\phi(s_t\mid o_{\le t},a_{<t}) } [ \log p_\theta(o_t\mid s_t) ] }
+$$
+
+这与 VAE 中
+
+$$
+\mathbb E_{q(z\mid x)} [\log p_\theta(x\mid z)]
+$$
+
+完全对应。
 它要求从 posterior 得到的 latent state 能够让 observation model 对真实观测赋予较高概率。
 论文把这一项称为 reconstruction。
 第二项：潜状态动态约束
 剩余部分为
-\[
-\mathbb E_q
-\left[
-\log p_\theta(s_t\mid s_{t-1},a_{t-1})
--
-\log q_\phi(s_t\mid o_{\le t},a_{<t})
-\right].
-\]这一项同时依赖
-\[
+
+$$
+\mathbb E_q \left[ \log p_\theta(s_t\mid s_{t-1},a_{t-1}) - \log q_\phi(s_t\mid o_{\le t},a_{<t}) \right].
+$$
+
+这一项同时依赖
+
+$$
 s_{t-1},\quad s_t.
-\]因此将其他状态边缘化，并先固定 \(s_{t-1}\)，得到内层期望：
-\[
+$$
+
+因此将其他状态边缘化，并先固定 $s_{t-1}$，得到内层期望：
+
+$$
 \begin{aligned}
-&
-\mathbb E_{
-q_\phi(s_t\mid o_{\le t},a_{<t})
-}
-\Big[
-\log p_\theta(s_t\mid s_{t-1},a_{t-1})
-\\
-&\qquad\qquad
--
-\log q_\phi(s_t\mid o_{\le t},a_{<t})
-\Big].
+& \mathbb E_{ q_\phi(s_t\mid o_{\le t},a_{<t}) } \Big[ \log p_\theta(s_t\mid s_{t-1},a_{t-1}) \\
+&\qquad\qquad - \log q_\phi(s_t\mid o_{\le t},a_{<t}) \Big].
 \end{aligned}
-\]根据 KL 散度定义：
-\[
-D_{\mathrm{KL}}(q\Vert p)
-=
-\mathbb E_q[\log q-\log p],
-\]所以：
-\[
+$$
+
+根据 KL 散度定义：
+
+$$
+D_{\mathrm{KL}}(q\Vert p) = \mathbb E_q[\log q-\log p],
+$$
+
+所以：
+
+$$
 \begin{aligned}
-={}&
--
-D_{\mathrm{KL}}
-\left(
-q_\phi(s_t\mid o_{\le t},a_{<t})
-\Vert
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-\right).
+={}& - D_{\mathrm{KL}} \left( q_\phi(s_t\mid o_{\le t},a_{<t}) \Vert p_\theta(s_t\mid s_{t-1},a_{t-1}) \right).
 \end{aligned}
-\]由于 \(s_{t-1}\) 本身也来自 posterior，还需要对其求期望：
-\[
-\boxed{
--
-\mathbb E_{
-q_\phi(s_{t-1}\mid o_{\le t-1},a_{<t-1})
-}
-\left[
-D_{\mathrm{KL}}
-\left(
-q_\phi(s_t\mid o_{\le t},a_{<t})
-\Vert
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-\right)
-\right].
-}
-\]论文称其为 complexity term。
+$$
+
+由于 $s_{t-1}$ 本身也来自 posterior，还需要对其求期望：
+
+$$
+\boxed{ - \mathbb E_{ q_\phi(s_{t-1}\mid o_{\le t-1},a_{<t-1}) } \left[ D_{\mathrm{KL}} \left( q_\phi(s_t\mid o_{\le t},a_{<t}) \Vert p_\theta(s_t\mid s_{t-1},a_{t-1}) \right) \right]. }
+$$
+
+论文称其为 complexity term。
 3.X.4 得到 PlaNet 公式 3
 因此：
-\[
-\boxed{
-\begin{aligned}
-\mathcal L_{\mathrm{ELBO}}
-=
-\sum_{t=1}^{T}
-\Bigg(
-&
-\underbrace{
-\mathbb E_{
-q_\phi(s_t\mid o_{\le t},a_{<t})
-}
-[
-\log p_\theta(o_t\mid s_t)
-]
-}_{\text{观测数据拟合项}}
-\\
-&-
-\underbrace{
-\mathbb E_{
-q_\phi(s_{t-1}\mid o_{\le t-1},a_{<t-1})
-}
-\left[
-D_{\mathrm{KL}}
-\left(
-q_\phi(s_t\mid o_{\le t},a_{<t})
-\Vert
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-\right)
-\right]
-}_{\text{潜状态动态约束}}
-\Bigg)
-\end{aligned}
-}
-\]且
-\[
-\boxed{
-\log p_\theta(o_{1:T}\mid a_{1:T})
-\geq
-\mathcal L_{\mathrm{ELBO}}.
-}
-\]这正是论文公式 3 的 reconstruction + complexity 结构。
+
+$$
+\boxed{ \begin{aligned}
+\mathcal L_{\mathrm{ELBO}} = \sum_{t=1}^{T} \Bigg( & \underbrace{ \mathbb E_{ q_\phi(s_t\mid o_{\le t},a_{<t}) } [ \log p_\theta(o_t\mid s_t) ] }_{\text{观测数据拟合项}} \\
+&- \underbrace{ \mathbb E_{ q_\phi(s_{t-1}\mid o_{\le t-1},a_{<t-1}) } \left[ D_{\mathrm{KL}} \left( q_\phi(s_t\mid o_{\le t},a_{<t}) \Vert p_\theta(s_t\mid s_{t-1},a_{t-1}) \right) \right] }_{\text{潜状态动态约束}} \Bigg)
+\end{aligned} }
+$$
+
+且
+
+$$
+\boxed{ \log p_\theta(o_{1:T}\mid a_{1:T}) \geq \mathcal L_{\mathrm{ELBO}}. }
+$$
+
+这正是论文公式 3 的 reconstruction + complexity 结构。
 3.X.5 与普通 VAE 的对应关系
 普通 VAE：
-\[
-\boxed{
-\mathcal L_{\mathrm{ELBO}}
-=
-\mathbb E_{q_\phi(z\mid x)}
-[\log p_\theta(x\mid z)]
--
-D_{\mathrm{KL}}
-\left(
-q_\phi(z\mid x)
-\Vert
-p(z)
-\right)
-}
-\]PlaNet：
-\[
-\boxed{
-\mathcal L_{\mathrm{ELBO}}
-=
-\sum_t
-\left[
-\mathbb E_q[\log p_\theta(o_t\mid s_t)]
--
-D_{\mathrm{KL}}
-\left(
-q_\phi(s_t\mid\text{history})
-\Vert
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-\right)
-\right]
-}
-\]对应关系为
-\[
-x\leftrightarrow o_t,
-\qquad
-z\leftrightarrow s_t,
-\]\[
-q_\phi(z\mid x)
-\leftrightarrow
-q_\phi(s_t\mid o_{\le t},a_{<t}),
-\]\[
-p_\theta(x\mid z)
-\leftrightarrow
-p_\theta(o_t\mid s_t),
-\]而最重要的变化是：
-\[
-\boxed{
-p(z)
-\quad\longrightarrow\quad
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-}
-\]即普通 VAE 中固定的 latent prior 被替换为由 dynamics model 给出的条件动态先验。
+
+$$
+\boxed{ \mathcal L_{\mathrm{ELBO}} = \mathbb E_{q_\phi(z\mid x)} [\log p_\theta(x\mid z)] - D_{\mathrm{KL}} \left( q_\phi(z\mid x) \Vert p(z) \right) }
+$$
+
+PlaNet：
+
+$$
+\boxed{ \mathcal L_{\mathrm{ELBO}} = \sum_t \left[ \mathbb E_q[\log p_\theta(o_t\mid s_t)] - D_{\mathrm{KL}} \left( q_\phi(s_t\mid\text{history}) \Vert p_\theta(s_t\mid s_{t-1},a_{t-1}) \right) \right] }
+$$
+
+对应关系为
+
+$$
+x\leftrightarrow o_t, \qquad z\leftrightarrow s_t,
+$$
+
+$$
+q_\phi(z\mid x) \leftrightarrow q_\phi(s_t\mid o_{\le t},a_{<t}),
+$$
+
+$$
+p_\theta(x\mid z) \leftrightarrow p_\theta(o_t\mid s_t),
+$$
+
+而最重要的变化是：
+
+$$
+\boxed{ p(z) \quad\longrightarrow\quad p_\theta(s_t\mid s_{t-1},a_{t-1}) }
+$$
+
+即普通 VAE 中固定的 latent prior 被替换为由 dynamics model 给出的条件动态先验。
 所以 PlaNet 的公式 3 可以理解为：
-\[
-\boxed{
-\text{VAE ELBO}
-+
-\text{时间序列}
-+
-\text{动作条件}
-=
-\text{Sequential VAE / State-Space ELBO}
-}
-\]3.X.6 从最大化 ELBO 到实际训练 Loss
+
+$$
+\boxed{ \text{VAE ELBO} + \text{时间序列} + \text{动作条件} = \text{Sequential VAE / State-Space ELBO} }
+$$
+
+3.X.6 从最大化 ELBO 到实际训练 Loss
 理论上希望最大化：
-\[
-\max_{\theta,\phi}
-\mathcal L_{\mathrm{ELBO}}.
-\]深度学习训练通常最小化负 ELBO，因此：
-\[
-\boxed{
-\mathcal J_{\mathrm{PlaNet}}
-=
--\mathcal L_{\mathrm{ELBO}}
-}
-\]即
-\[
+
+$$
+\max_{\theta,\phi} \mathcal L_{\mathrm{ELBO}}.
+$$
+
+深度学习训练通常最小化负 ELBO，因此：
+
+$$
+\boxed{ \mathcal J_{\mathrm{PlaNet}} = -\mathcal L_{\mathrm{ELBO}} }
+$$
+
+即
+
+$$
 \begin{aligned}
-\mathcal J_{\mathrm{PlaNet}}
-=
-\sum_{t=1}^{T}
-\Bigg(
-&
-\underbrace{
--\mathbb E_q
-[\log p_\theta(o_t\mid s_t)]
-}_{\mathcal L_{\mathrm{obs}}}
-\\
-&+
-\underbrace{
-\mathbb E_{q(s_{t-1})}
-D_{\mathrm{KL}}
-\left(
-q_\phi(s_t\mid o_{\le t},a_{<t})
-\Vert
-p_\theta(s_t\mid s_{t-1},a_{t-1})
-\right)
-}_{\mathcal L_{\mathrm{dyn}}}
-\Bigg).
+\mathcal J_{\mathrm{PlaNet}} = \sum_{t=1}^{T} \Bigg( & \underbrace{ -\mathbb E_q [\log p_\theta(o_t\mid s_t)] }_{\mathcal L_{\mathrm{obs}}} \\
+&+ \underbrace{ \mathbb E_{q(s_{t-1})} D_{\mathrm{KL}} \left( q_\phi(s_t\mid o_{\le t},a_{<t}) \Vert p_\theta(s_t\mid s_{t-1},a_{t-1}) \right) }_{\mathcal L_{\mathrm{dyn}}} \Bigg).
 \end{aligned}
-\]PlaNet 中 observation model 是固定协方差 Gaussian，因此
-\[
+$$
+
+PlaNet 中 observation model 是固定协方差 Gaussian，因此
+
+$$
 -\log p_\theta(o_t\mid s_t)
-\]在优化意义上对应于图像重建的均方误差。论文明确指出 unit-variance Gaussian 的 log-likelihood 与 MSE 只差常数项。
+$$
+
+在优化意义上对应于图像重建的均方误差。论文明确指出 unit-variance Gaussian 的 log-likelihood 与 MSE 只差常数项。
 因此实际训练形式可以直观理解为：
-\[
-\boxed{
-\mathcal J
-\approx
-\sum_t
-\left[
-\text{image reconstruction loss}
-+
-\text{latent dynamics KL loss}
-\right].
-}
-\]论文还说明公式 3 为简化只写 observation loss，reward loss 可以类似加入。Hafner 等 - 2019 - Learning Late…
+
+$$
+\boxed{ \mathcal J \approx \sum_t \left[ \text{image reconstruction loss} + \text{latent dynamics KL loss} \right]. }
+$$
+
+论文还说明公式 3 为简化只写 observation loss，reward loss 可以类似加入。Hafner 等 - 2019 - Learning Late…
 如果你想让你现在 VAE 和 PlaNet 两部分笔记风格完全统一，那么最值得保留的一句总结是：
-普通 VAE 的 ELBO 约束 posterior \(q_\phi(z\mid x)\) 接近固定先验 \(p(z)\)；PlaNet 则把固定先验替换成由上一时刻状态和动作预测得到的动态先验 \(p_\theta(s_t\mid s_{t-1},a_{t-1})\)。因此 PlaNet 的公式 3 本质上是 VAE ELBO 在时序状态空间模型中的推广。
-
-
+普通 VAE 的 ELBO 约束 posterior $q_\phi(z\mid x)$ 接近固定先验 $p(z)$；PlaNet 则把固定先验替换成由上一时刻状态和动作预测得到的动态先验 $p_\theta(s_t\mid s_{t-1},a_{t-1})$。因此 PlaNet 的公式 3 本质上是 VAE ELBO 在时序状态空间模型中的推广。
 
 ---
-
 
 公式三推导，此推导是将VAE的单步形式扩展为多步并引入动作输入
 
