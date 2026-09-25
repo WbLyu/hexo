@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/8bc702ab7818c1865b0b4258db6bb03c.avif
 ---
 
 ## 1. 奇异值分解(Singular value decomposition)

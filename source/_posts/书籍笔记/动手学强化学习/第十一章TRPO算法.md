@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/706789f26569a05d6f11147ddabb7860.avif
 ---
 
 TRPO算法的重点体现在策略函数的更新方式上

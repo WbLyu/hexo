@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/6ba77b3e89b7c6e0aa1930240934fbd7.avif
 ---
 
 <!-- markdownlint-disable MD034 -->

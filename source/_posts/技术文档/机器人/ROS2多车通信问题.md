@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/0e100fcd5979b4f7b26d6600bd9f494e.avif
 ---
 
 ## 1. 组播默认路由选取错误

@@ -13,7 +13,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -29,6 +28,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/666c81c6bae54697722a4bac6096e36f.avif
 ---
 
 优势：代码提示更快；可以进行静态分析

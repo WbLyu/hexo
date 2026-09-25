@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/6661b2a111684b5520f13c5a76e4c2f3.avif
 ---
 
 ## 1. 向量基础

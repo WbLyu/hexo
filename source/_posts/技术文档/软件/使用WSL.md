@@ -13,7 +13,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -29,6 +28,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/a95ffda820f48d1d94cfefb93c755e50.avif
 ---
 
 ## 1. 与Windows网络共享

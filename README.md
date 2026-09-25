@@ -46,16 +46,16 @@ git submodule update --init --recursive
 
 ```bash
 # 新建文章
-npx hexo new "文章标题"
+hexo new "文章标题"
 
-# 本地预览
-npm run server
+# 强制全部重新分配自动封面
+AUTO_COVER_REASSIGN=1 hexo d -g
 
-# 生成静态网站
-npm run build
+# 生成与部署，只给没有cover的文章自动分配
+hexo d -g
 
 # 清理生成结果与缓存
-npm run clean
+hexo clean
 ```
 
 修改主题配置、删除或重命名文章后，可以先清理再生成。

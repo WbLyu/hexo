@@ -10,7 +10,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -26,6 +25,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/4263a51e4f3da2b8e3c124403d63f3e2.avif
 ---
 
 

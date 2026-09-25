@@ -9,7 +9,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -25,6 +24,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/f2ff99727ed2a74b4939426b143140bd.avif
 ---
 
 `\to`是`\rightarrow`的简化，二者是等价的

@@ -12,7 +12,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -28,6 +27,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/b78a93a2559e9ac12f1fb3b82dd0ebf1.avif
 ---
 
 `usr/include/eigen3`存放的是apt安装的Eigen库

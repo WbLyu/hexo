@@ -12,7 +12,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -28,6 +27,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/66863db4ee5e697ec7c10cbd7cf7fc52.avif
 ---
 
 ## 2. 锁

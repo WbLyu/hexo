@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/e3edc6875785cc33295c9ad6075202c8.avif
 ---
 
 虽然采用时序差分法来指导网络学习，但是此算法仍是在一个episode结束后才进行网络更新

@@ -12,7 +12,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -28,6 +27,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/4dfb0c1c9a0b296dd03675346da1148f.avif
 ---
 
 ## 1. 异步通信

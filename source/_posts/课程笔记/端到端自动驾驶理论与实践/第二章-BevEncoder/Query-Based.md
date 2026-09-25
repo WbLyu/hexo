@@ -12,7 +12,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -28,6 +27,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/74b2acce093ed87f7ba6bbfa64c32800.avif
 ---
 
 ## 1. 和LSS-Based的区别

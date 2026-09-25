@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/18fc344896a05bd265c3b29738efee70.avif
 ---
 
 此论文通过隐式方法将优化问题表达为神经网络中的一层，它的内部不是传统意义上的神经元堆叠，不是包含全连接层、激活函数等结构，而是一个特殊的“可学习的可微优化层”

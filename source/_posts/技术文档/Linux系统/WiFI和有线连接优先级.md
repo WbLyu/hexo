@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/c96afc84a9829abde38a6363596f4f13.avif
 ---
 
 目的：为了实现同时连接WiFi和有线网络时，优先使用WiFi连接互联网

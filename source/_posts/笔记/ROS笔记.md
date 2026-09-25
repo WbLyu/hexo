@@ -9,7 +9,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -25,6 +24,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/70461c7b5dc98d82174be0720804f284.avif
 ---
 
 ## 1. 将Subscriber类作为类中成员变量

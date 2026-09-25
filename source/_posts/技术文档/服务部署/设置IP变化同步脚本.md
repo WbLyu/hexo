@@ -14,7 +14,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -30,6 +29,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/6db9855abe658024c2c84332f74d6097.avif
 ---
 
 ## 1. 创建无密码密钥

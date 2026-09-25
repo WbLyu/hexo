@@ -10,7 +10,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -26,6 +25,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/9f8d6c97abda2b283ed8c054b3f48420.avif
 ---
 
 ## 1. Array

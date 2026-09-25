@@ -12,7 +12,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -28,6 +27,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/a759c985eaaa67309495413af2508e79.avif
 ---
 
 ## 1. 安装依赖

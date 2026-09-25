@@ -124,10 +124,6 @@ cover:
   # When cover is not set, the default cover is displayed
   default_cover:
     # - https://random.wblyu.top/cover
-    - /img/wallhaven-k937rm.avif
-    - /img/wallhaven-kxev76.avif
-    - /img/wallhaven-wemx96.avif
-    - /img/wallhaven-ym7v37.avif
     # - xxx.jpg
 
 # Replace Broken Images
@@ -188,7 +184,7 @@ subtitle:
   # 1 - hitokoto.cn
   # 2 - https://api.aa1.cn/doc/yiyan.html
   # 3 - jinrishici.com
-  source: 2
+  source: 1
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
 
@@ -1033,7 +1029,7 @@ instantpage: false
 # Lazyload
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
-  enable: true
+  enable: false
   # Use browser's native lazyload instead of vanilla-lazyload
   native: false
   # Specify the field to use lazyload (site or post)
@@ -1090,7 +1086,6 @@ inject:
   #  - <link rel="stylesheet" href="/self/duotone.css">
     # - <link rel="stylesheet" href="/xxx.css">
   bottom:
-    - <script src="/js/random-cover.js"></script>
     # - <script src="xxxx"></script>
 
 # CDN Settings

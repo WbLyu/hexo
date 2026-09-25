@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/9f5d9ac38788ee7fadc602ccec1b9d0b.avif
 ---
 
 $\Delta \subset \mathbb{R} ^n$表示凸物体

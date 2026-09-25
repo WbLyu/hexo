@@ -9,7 +9,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -25,6 +24,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/262705840579b5966d51a7f1665fa07e.avif
 ---
 
 ## 1. 左值与右值

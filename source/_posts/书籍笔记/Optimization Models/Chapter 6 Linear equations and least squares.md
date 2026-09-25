@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/bdeb6008f553417cb9771452d1a20c3f.avif
 ---
 
 我们在这里介绍线性方程以及一种用于表示它们的标准形式$\bm{Ax} = \bm{y}$，其中$\bm{x} \in \mathbb{R} ^n$为未知变量，$\bm{A} \in \mathbb{R} ^{m,n}$为系数矩阵，$\bm{y} \in \mathbb{R} ^m$为已知向量。实际上，求解一组线性方程 $\bm{Ax} = \bm{y}$的问题也可以解释为一个优化问题，即相对于$\bm{x}$最小化$\lVert \bm{Ax} - \bm{y} \rVert_2$

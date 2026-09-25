@@ -10,7 +10,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -26,6 +25,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/2b63b66c47329be958fafe5994f11ff6.avif
 ---
 
 1. 变量命名使用下划线命名法，函数命名使用大驼峰命名法，类和结构体使用大驼峰命名法，文件名使用下划线命名法

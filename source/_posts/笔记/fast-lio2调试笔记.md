@@ -9,7 +9,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -25,6 +24,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/ab6349b9e62e5994f29163acccd70c33.avif
 ---
 
 ## 1. 为点云保存到地图中增加触发条件

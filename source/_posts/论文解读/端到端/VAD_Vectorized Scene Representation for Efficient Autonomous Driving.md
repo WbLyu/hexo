@@ -11,7 +11,6 @@ categories:
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -27,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/800c76d57e1f31c5b4a1f862ce59929f.avif
 ---
 <!-- markdownlint-disable MD034 -->
 {% btn 'https://github.com/hustvl/VAD',GitHub %}

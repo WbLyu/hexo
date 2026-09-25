@@ -9,7 +9,6 @@ categories: 笔记
 # description:
 top_img: transparent
 # comments:
-# cover:
 # toc:
 # toc_number:
 # toc_style_simple:
@@ -25,6 +24,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/9813ccec639d5abd26d137bf13ef7e58.avif
 ---
 
 ## 1. 数组智能指针
