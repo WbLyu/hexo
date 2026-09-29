@@ -464,6 +464,8 @@ $$
 1. 第一项与`VAE`中的$\mathbb E_{q(z\mid x)} [\log p(x\mid z)]$对应。它要求从后验编码器中得到的潜状态能够让观测模型对真实观测赋予较高概率。论文把这一项称为`reconstruction`
 2. 第二项与`VAE`中的$D_{\mathrm{KL}} \left( q_\phi(z\mid x) \Vert p(z) \right)$对应。它要求编码器产生的近似后验不要过度偏离事先规定的潜变量先验（转移模型）。
 
+> 这里$\log p(o_t\mid s_t)$中的$o_t$指的是真实值，因为$p(o_t\mid s_t)$输出的是概率分布，所以这里损失函数真实的意思是要模型输出的概率分布中$o_t$的概率密度最大
+
 与`VAE`类似，本文中观测模型$p(o_t\mid s_t)$是固定协方差高斯分布，因此同样可以简写成`MSE`。
 
 > 论文中也明确指出 unit-variance Gaussian 的 log-likelihood 与 MSE 只差常数项

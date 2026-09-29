@@ -1,6 +1,6 @@
 ---
 title: "Dreamer V2: Mastering Atari with Discrete World Models"
-date: 
+date: 2026-09-23 19:08:47
 # updated:
 # tags:
 #     - 
@@ -194,6 +194,8 @@ $$
 $$
 
 论文中将$\alpha$设为$0.8$
+
+> 离散化后仍然是随机分布，神经网络的输出例如分析其中的某一个分类变量，神经网络的输出经过`softmax`操作归一化后假设为$p=\operatorname{softmax}(l) = [0.1,0.6,0.2,0.1]$，这代表它分别以$0.1,0.6,0.2,0.1$的概率取第$1 \sim 4$类。所以它仍然是分布，只是变成了离散分布，仍然可以计算KL散度
 
 ## 3. 行为学习
 

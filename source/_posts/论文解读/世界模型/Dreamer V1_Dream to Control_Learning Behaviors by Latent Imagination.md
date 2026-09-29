@@ -61,6 +61,8 @@ cover: https://img.wblyu.top/images/d87b9b976129d1cfe3f2235816881b5d.avif
 
 整个过程不断重复，使行为模型和动力学模型随着新采集的数据持续改进，同时更准确的模型又会产生更好的规划行为，从而采集到更有价值的新数据。
 
+> `Dreamer`系列相比与PlaNet，省去了与真实环境交互时在线想象的步骤，而是把这个过程放进离线训练中，将想象的结果蒸馏进`actor`中
+
 ## 3. 基于潜空间想象（imagination）的行为学习
 
 ### 3.1 演员评论家方法（actor critic approach）
