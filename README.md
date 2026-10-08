@@ -31,7 +31,7 @@
 git clone --recurse-submodules <本仓库地址> hexo
 cd hexo
 npm ci
-npm run server
+npx hexo server
 ```
 
 浏览器访问 `http://localhost:4000`。
@@ -46,16 +46,16 @@ git submodule update --init --recursive
 
 ```bash
 # 新建文章
-hexo new "文章标题"
+npx hexo new "文章标题"
 
 # 强制全部重新分配自动封面
-AUTO_COVER_REASSIGN=1 hexo d -g
+AUTO_COVER_REASSIGN=1 npx hexo d -g
 
 # 生成与部署，只给没有cover的文章自动分配
-hexo d -g
+npx hexo d -g
 
 # 清理生成结果与缓存
-hexo clean
+npx hexo clean
 ```
 
 修改主题配置、删除或重命名文章后，可以先清理再生成。
@@ -69,12 +69,6 @@ hexo clean
 
 ```bash
 npx hexo deploy --generate
-```
-
-已安装全局 Hexo CLI 时，也可以使用：
-
-```bash
-hexo d -g
 ```
 
 部署脚本位于 `scripts/deploy-cos.js`，将生成目录同步到 COS。

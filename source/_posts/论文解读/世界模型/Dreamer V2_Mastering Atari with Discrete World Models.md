@@ -250,7 +250,7 @@ $$
 $$
 L(\psi) = \mathbb E_{p_\phi,p_\psi} \left[ \sum_{t=1}^{H-1} \left( \underbrace{-\rho \log p_\psi(\hat a_t\mid \hat z_t) \operatorname{sg} \left( V_t^\lambda-v_\xi(\hat z_t) \right)}_{\text{reinforce}}
 \underbrace{- (1-\rho)V_t^\lambda}_{\substack{\text{dynamics}\\\text{backprop}}}
-\underbrace{- \eta \mathcal H[\hat a_t\mid\hat z_t]}_{\text{entropy regularizer}} \right) \right]
+\underbrace{- \eta \mathcal H[p(\hat a_t\mid\hat z_t)]}_{\text{entropy regularizer}} \right) \right]
 $$
 
 **第一项：REINFORCE**
@@ -278,3 +278,8 @@ $A_t$可以看成**这次轨迹的实际表现 - `Critic`原本的平均预期**
 熵正则化本质上是为了让输出较为均匀，用在这里是为了鼓励模型去进行探索（exploration）。将参数$\eta$设置很小是为了让模型稍微探索但不要永远随机
 
 > `Actor`和`Critic`的每个时间步`loss`，还要乘累计预测的折扣因子，从而平滑地考虑回合结束的可能性（并不是低于某个阈值就硬性截断）
+
+作者在论文中提出
+
+- 在连续控制任务中`dynamics backprop`表现明显更好，因此采用$\rho=0$
+- 在离散控制任务（如Atari）中`REINFORCE`效果明显更好，因此采用$\rho=1$

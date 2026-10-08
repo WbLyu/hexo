@@ -26,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/a16a8fe2a19defabaac44f64e9cd2b96.avif
 ---
 
 ## 1. 引言
@@ -51,11 +52,15 @@ $$
 & \text{Latent dynamics} && z'=d(z,a,e) \\
 & \text{Reward} && \hat{r}=R(z,a,e) \\
 & \text{Terminal value} && \hat{q}=Q(z,a,e) \\
-& \text{Policy prior} && \hat{a}=p(z,e)
+& \text{Policy prior} && \hat{a} \sim p(z,e)
 \end{aligned}
 $$
 
 其中$s$为观测/状态，$z$为潜空间表征，$a$为动作，$e$为可学习的任务嵌入用以告诉多任务世界模型当前正在处理哪个任务。这个模型省去了显示重建/解码观测的步骤，不选择观测作为监督信号。
+
+1. Encoder和Latent dynamics函数$h,d$输出确定性向量
+2. Reward和Terminal value函数$R,Q$输出分类分布，而且不执行采样操作
+3. Policy prior函数$p$输出连续高斯分布，并执行采样操作
 
 > 这篇论文将整个过程看成完全可观测马尔可夫决策过程（Markov Decision Process, MDP），而非`PlaNet`/`Dreamer`系列的部分可观测MDP过程。因此后验/编码器中无需获取历史信息，只根据当前的观测便能计算出潜空间表征，这便需要输入的信息足够充分
 
@@ -75,6 +80,16 @@ $$
 
 只保证预测的潜空间表征比较精准还不够，因为它可能学到许多和任务无关的信息，还需要加入任务相关的监督信号
 
-**第二项：Reward prediction**
+**第二、三项：Reward/Value prediction**
 
-选取未来轨迹时需要考虑获得的回报，因此需要保证预测的奖励比较精确，进行奖励回归。最直观的方式是选择`MSE`，但是作者考虑到不同任务的奖励尺度并不一致，因此将标量回归转为多分类形式，即变成一组分类变量，类似`Dreamer V2/V3`
+这里的操作与`Dreamer V3`一致，如先采用`symlog`操作将这两项变换到压缩空间中，对标签在`log`空间中放置等距分箱并将标签转为`two-hot`，然后采用交叉熵来计算`two-hot`的误差
+
+> 若是`one-hot target`，$CE = -\log p_k$；但若是`two-hot target`,$CE = -\sum_{i}^{} y_i \log p_i $。所以这里不使用$-\log$的写法是为了表述更加准确
+
+`Value prediction`的目标值展开为
+
+$$
+q_t = r_t + \gamma \bar{Q}(z'_t,p(z'_t))
+$$
+
+这本质上是单步`TD learning`，这里的$\bar{Q}$和$Q$并不相同，它是对$Q$进行指数移动平均（EMA）的结果。同时本文章不只训练一个$Q$，而是训练5个彼此独立的$Q$和对应的$\bar{Q}$
