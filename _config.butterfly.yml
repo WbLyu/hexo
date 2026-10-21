@@ -1136,7 +1136,7 @@ CDN:
     # giscus:
     # instantpage:
     # instantsearch:
-    katex: https://unpkg.com/katex@0.18.7/dist/katex.min.css
+    katex: https://unpkg.com/katex@0.19.0/dist/katex.min.css
     # katex_copytex:
     # lazyload:
     # local_search:

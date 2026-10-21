@@ -28,10 +28,11 @@
 克隆源码及主题子模块：
 
 ```bash
-git clone --recurse-submodules <本仓库地址> hexo
+git clone --recurse-submodules https://github.com/WbLyu/hexo.git hexo
 cd hexo
+npm install -g hexo-cli
 npm ci
-npx hexo server
+hexo server
 ```
 
 浏览器访问 `http://localhost:4000`。
@@ -46,16 +47,16 @@ git submodule update --init --recursive
 
 ```bash
 # 新建文章
-npx hexo new "文章标题"
+hexo new "文章标题"
 
 # 强制全部重新分配自动封面
-AUTO_COVER_REASSIGN=1 npx hexo d -g
+AUTO_COVER_REASSIGN=1 hexo d -g
 
 # 生成与部署，只给没有cover的文章自动分配
-npx hexo d -g
+hexo d -g
 
 # 清理生成结果与缓存
-npx hexo clean
+hexo clean
 ```
 
 修改主题配置、删除或重命名文章后，可以先清理再生成。
@@ -68,7 +69,7 @@ npx hexo clean
 4. 执行：
 
 ```bash
-npx hexo deploy --generate
+hexo deploy --generate
 ```
 
 部署脚本位于 `scripts/deploy-cos.js`，将生成目录同步到 COS。
@@ -104,6 +105,7 @@ npx hexo deploy --generate
 git pull
 git submodule update --init --recursive
 npm ci
+npm install -g hexo-cli
 ```
 
 文章和配置通过本仓库备份，部署到 COS 不等于备份源码。
