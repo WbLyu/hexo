@@ -26,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/882ccedaf5f539504b5ed7417d99a49a.avif
 ---
 
 ## 1. 引言

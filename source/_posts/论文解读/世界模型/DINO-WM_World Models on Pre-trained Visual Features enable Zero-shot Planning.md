@@ -26,7 +26,14 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/a5809d5675669b7e335034ec2862eb3f.avif
 ---
+
+<!-- markdownlint-disable MD034 -->
+{% btn 'https://github.com/gaoyuezhou/dino_wm',GitHub %}
+{% btn 'https://dino-wm.github.io/',Website %}
+{% btn 'https://arxiv.org/abs/2411.04983',arXiv %}
+<!-- markdownlint-enable MD034 -->
 
 ## 1. 引言
 

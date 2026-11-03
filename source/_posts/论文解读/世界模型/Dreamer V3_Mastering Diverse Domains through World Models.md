@@ -108,7 +108,7 @@ $$
 \end{aligned}
 $$
 
-注意这里`Critic`的输出不再是数值了，而是变成了分布。对其取期望得到$v_t = \mathbb{E}\left[ v_{\theta}(\cdot \mid s_t) \right] $
+注意这里`Critic`的输出不再是数值了，而是变成了分布。对其取期望得到$v_t = \mathbb{E}\left[ v_{\theta}(\cdot \mid s_t) \right]$
 
 ### 3.1 Actor loss
 

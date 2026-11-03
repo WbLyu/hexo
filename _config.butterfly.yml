@@ -1083,8 +1083,7 @@ inject:
     - <link rel="stylesheet" href="/css/fontSetting.css">
     - <link rel="stylesheet" href="/css/iconfont.css">
     - <link rel="stylesheet" href="/css/transpancy.css">
-  #  - <link rel="stylesheet" href="/self/duotone.css">
-    # - <link rel="stylesheet" href="/xxx.css">
+    - <link rel="stylesheet" href="/css/custom.css">
   bottom:
     # - <script src="xxxx"></script>
 

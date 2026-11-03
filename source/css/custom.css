@@ -1,0 +1,31 @@
+/* 文章表格边框 */
+#article-container .table-wrap table th,
+#article-container .table-wrap table td,
+#article-container > table th,
+#article-container > table td {
+  border: 1px solid rgba(60, 70, 80, 0.4) !important;
+}
+
+/* 无序列表使用实心圆 */
+#article-container ul > li {
+  list-style-type: disc !important;
+}
+
+/* 调整列表标记颜色和大小 */
+#article-container ul > li::marker {
+  color: #1683c6 !important;
+  font-size: 1.2em;
+}
+
+/* 深色模式表格 */
+[data-theme="dark"] #article-container .table-wrap table th,
+[data-theme="dark"] #article-container .table-wrap table td,
+[data-theme="dark"] #article-container > table th,
+[data-theme="dark"] #article-container > table td {
+  border-color: rgba(210, 220, 230, 0.35) !important;
+}
+
+/* 深色模式列表 */
+[data-theme="dark"] #article-container ul > li::marker {
+  color: #64b5f6 !important;
+}

@@ -26,7 +26,13 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/348c2bba94871833908aafde0241f3e2.avif
 ---
+
+<!-- markdownlint-disable MD034 -->
+{% btn 'https://github.com/facebookresearch/vjepa2',GitHub %}
+{% btn 'https://arxiv.org/abs/2506.09985',arXiv %}
+<!-- markdownlint-enable MD034 -->
 
 > 思考  
 > V-JEPA 2预训练时编码器的输入是连续多帧视频，但是训练世界模型时编码器的输入是每一帧单独的图像。因此后者并没有充分利用编码器对连续视频的编码能力（捕获时空特征），这可能是作者在工程上的妥协
