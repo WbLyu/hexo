@@ -1,6 +1,6 @@
 ---
-title: Denoising Diffusion Probabilistic Models
-date: 2026-10-29 19:53:59
+title: 'DiffusionDrive: Truncated Diffusion Model for End-to-End Autonomous Driving'
+date: 2026-11-6 19:53:59
 # updated:
 # tags:
 #     - 
@@ -29,5 +29,7 @@ top_img: transparent
 cover: https://img.wblyu.top/images/10f757b819b97a135417f06013c9e26f.avif
 ---
 
-## 2. 背景
-
+<!-- markdownlint-disable MD034 -->
+{% btn 'https://github.com/hustvl/DiffusionDrive',GitHub %}
+{% btn 'https://arxiv.org/abs/2411.15139',CVPR 2025 %}
+<!-- markdownlint-enable MD034 -->
