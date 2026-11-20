@@ -29,3 +29,13 @@
 [data-theme="dark"] #article-container ul > li::marker {
   color: #64b5f6 !important;
 }
+
+/* 行内与独立公式：深蓝色提高与正文和浅绿色背景的区分度 */
+#article-container .katex {
+  color: #174ea6;
+}
+
+/* 夜间模式使用浅青蓝色，保持公式清晰 */
+[data-theme="dark"] #article-container .katex {
+  color: #9dcfe0;
+}

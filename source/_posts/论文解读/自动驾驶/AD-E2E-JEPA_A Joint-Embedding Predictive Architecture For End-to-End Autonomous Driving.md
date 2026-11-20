@@ -6,7 +6,7 @@ date: 2026-11-02 20:49:04
 #     - 
 categories: 
             - 论文解读
-            - 世界模型
+            - 自动驾驶
 # keywords:
 # description:
 top_img: transparent
@@ -33,6 +33,10 @@ cover: https://img.wblyu.top/images/702bb3bd3bbe3f80bbc730f836bcc1e3.avif
 {% btn 'https://github.com/HaoranZhuExplorer/AD-E2E-JEPA',GitHub %}
 {% btn 'https://arxiv.org/abs/2609.34085',arXiv %}
 <!-- markdownlint-enable MD034 -->
+
+---
+
+> 思考
 
 论文存在的问题：
 
@@ -272,7 +276,7 @@ $$
 
 ## 3.3 零样本目标条件规划
 
-交叉熵方法（CEM）需要对大量候选动作序列进行迭代评估，对自动驾驶而言代价过高。因此，作者选择了一种更加简单的规划方法：**直接从预先构建的候选轨迹词表（Vocabulary）中选择轨迹**，这里的词表可以理解为一个轨迹库$\mathcal V= \left\{ P_{t:t+F}^{i} \right\}_{i=1}^{8192}$。论文使用已有$Vad V2$提供的聚类轨迹词表，并根据角度坐标排序，再以均匀间隔采样的方式选择 256 条候选轨迹
+交叉熵方法（CEM）需要对大量候选动作序列进行迭代评估，对自动驾驶而言代价过高。因此，作者选择了一种更加简单的规划方法：**直接从预先构建的候选轨迹词表（Vocabulary）中选择轨迹**，这里的词表可以理解为一个轨迹库$\mathcal V= \left\{ P_{t:t+F}^{i} \right\}_{i=1}^{8192}$。论文使用已有`Vad V2`提供的聚类轨迹词表，并根据角度坐标排序，再以均匀间隔采样的方式选择 256 条候选轨迹
 
 在实际使用中，像将轨迹转为动作，然后调用世界模型获得未来的潜状态。为选择最优轨迹，论文将目标定义为未来第$F$帧的真实相机图像$I_{t+F}$，并使用同一个 Encoder 和 Projector 将其编码为$z_{t+F}$，然后计算第$i$条轨迹预测得到的未来潜状态与目标潜状态之间的距离
 

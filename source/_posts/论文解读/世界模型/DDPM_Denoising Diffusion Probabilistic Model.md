@@ -26,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/5a49431815d35b8e5b16a55b492dfd7a.avif
 ---
 
 只介绍论文中的公式推导，主要参考苏剑林的博客
@@ -48,3 +49,17 @@ $$
 ### 1.2 该怎么拆
 
 `DDPM`做生成模型的过程，跟上述“拆楼-建楼”的类比是完全一致的，它是先构建一个从数据样本渐变到随机噪声的过程，然后再考虑其逆变换，通过反复执行逆变换来完成数据样本的生成
+
+具体来说，`DDPM`将拆楼的过程建模为
+
+$$
+x_t = \alpha _t x_{t-1} + \beta _t \epsilon _t, \quad \epsilon _t \sim \mathcal{N}(0,I)
+$$
+
+其中$\alpha _t , \beta_t >0$，且$\alpha _t^2 + +\beta_t^2 = 1$，噪声/原材料$ε_t$的引入代表着对原始楼体的一种破坏，$\beta_t$代表着单步“拆楼”中对原来楼体的破坏程度
+
+反复执行这个步骤可以得到
+
+$$
+x_t =  \alpha _t x_{t-1} + \beta _t \epsilon _t
+$$
