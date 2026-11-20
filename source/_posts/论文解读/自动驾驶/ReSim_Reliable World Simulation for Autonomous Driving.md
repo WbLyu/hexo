@@ -26,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/a076067a588441e00096b423d3a5e282.avif
 ---
 
 ---

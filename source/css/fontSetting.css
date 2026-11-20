@@ -18,6 +18,15 @@ body {
     line-height: 1.75;
 }
 
+#article-container {
+    font-weight: 400;
+}
+
+#article-container strong,
+#article-container b {
+    font-weight: 700;
+}
+
 /* 行内代码和代码块 */
 code,
 pre,

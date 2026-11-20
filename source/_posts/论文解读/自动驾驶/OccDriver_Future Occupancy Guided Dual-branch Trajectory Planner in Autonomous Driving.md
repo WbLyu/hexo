@@ -26,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/eb9afc6d3e702ff6fd804efcb995504e.avif
 ---
 
 ---
@@ -203,7 +204,7 @@ $$
 
 **Coarse Trajectory Decoder**
 
-引入一组$M$个可学习的Query $Q_m \in \mathbb{R} ^{M \times D}$并与自车和其他Agent的向量特征$\{ F_E,F_A \} \subset F_{\mathrm{vec}}$结合，形成$ Q_{\mathrm{vec}} \in \mathbb{R} ^{M \times (N_A+1) \times D}$
+引入一组$M$个可学习的Query $Q_m \in \mathbb{R} ^{M \times D}$并与自车和其他Agent的向量特征$\{ F_E,F_A \} \subset F_{\mathrm{vec}}$结合，形成$Q_{\mathrm{vec}} \in \mathbb{R} ^{M \times (N_A+1) \times D}$
 
 > 这里的$M$代表模态的数量，用以区分不同的纵向运动模式，即未来行驶的不同距离代表不同的模态
 

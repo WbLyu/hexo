@@ -26,6 +26,7 @@ top_img: transparent
 # aside:
 # abcjs:
 # noticeOutdate:
+cover: https://img.wblyu.top/images/57589bcb7930b90252622539045e4a12.avif
 ---
 
 <!-- markdownlint-disable MD034 -->
