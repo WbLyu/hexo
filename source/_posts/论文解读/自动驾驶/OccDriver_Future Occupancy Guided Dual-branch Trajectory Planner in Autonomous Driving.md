@@ -28,7 +28,9 @@ top_img: transparent
 # noticeOutdate:
 cover: https://img.wblyu.top/images/eb9afc6d3e702ff6fd804efcb995504e.avif
 ---
-
+<!-- markdownlint-disable MD034 -->
+{% btn 'https://openreview.net/forum?id=abJCjkIwi5', ICLR 2026 %}
+<!-- markdownlint-enable MD034 -->
 ---
 
 > 思考
